@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -26,7 +26,22 @@ export const AddModal: React.FC<Props> = ({
   fields,
   title,
 }) => {
+  const btnRef = useRef<any>(null);
   const handleClose = () => setOpen(false);
+
+  const enterKeyListener = (event: KeyboardEvent) => {
+    console.log("enter pressed");
+    if (event.key === "Enter") {
+      btnRef?.current?.click();
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      window.addEventListener("keypress", enterKeyListener);
+    }
+    return () => window.removeEventListener("keypress", enterKeyListener);
+  }, [open]);
 
   return (
     <Dialog
@@ -50,7 +65,7 @@ export const AddModal: React.FC<Props> = ({
                 alignItems="stretch"
               >
                 {fields.map((field) => (
-                  <Grid item xs={12}>
+                  <Grid key={field.name} item xs={12}>
                     <TextField
                       fullWidth
                       variant="outlined"
@@ -71,6 +86,7 @@ export const AddModal: React.FC<Props> = ({
                   Cancel
                 </Button>
                 <Button
+                  ref={btnRef}
                   onClick={handleSubmit}
                   variant="outlined"
                   color="primary"
