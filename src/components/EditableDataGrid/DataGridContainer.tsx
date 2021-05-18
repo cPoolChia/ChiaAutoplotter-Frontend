@@ -9,9 +9,7 @@ interface Props {
   columns: GridColumns;
   total: number;
   title: string;
-  addHandler: any;
   editHandler: any;
-  deleteHandler: any;
   Toolbox?: React.ReactChild;
   style?: Object;
 }
@@ -21,9 +19,7 @@ export const DataGridContainer: React.FC<Props> = ({
   columns,
   total,
   title,
-  addHandler,
   editHandler,
-  deleteHandler,
   Toolbox,
   style,
 }) => {

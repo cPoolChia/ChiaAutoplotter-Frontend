@@ -7,7 +7,7 @@ import ServerService from "../../services/ServerService";
 import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 
-const columns = [
+const plotsColumns = [
   {
     field: "id",
     headerName: "ID",
@@ -53,7 +53,19 @@ const columns = [
   },
 ];
 
-export const SingleServerPage: React.FC = () => {
+interface Props {
+  QueuesDataGrid: React.ReactChild;
+  locatedPlots: PlotsArrayType;
+  createdPlots: PlotsArrayType;
+  serverData: ServerType;
+}
+
+export const SingleServerPage: React.FC<Props> = ({
+  QueuesDataGrid,
+  serverData,
+  createdPlots,
+  locatedPlots,
+}) => {
   return (
     <Container>
       <Breadcrumbs style={{ marginTop: 10, marginBottom: 20 }}>
@@ -68,7 +80,7 @@ export const SingleServerPage: React.FC = () => {
           title="Created Plots"
           style={{ width: "100%", height: 500 }}
           rows={createdPlots.items}
-          columns={columns}
+          columns={plotsColumns}
           total={createdPlots.amount}
         />
       </Paper>
@@ -77,9 +89,12 @@ export const SingleServerPage: React.FC = () => {
           title="Located Plots"
           style={{ width: "100%", height: 500 }}
           rows={locatedPlots.items}
-          columns={columns}
+          columns={plotsColumns}
           total={locatedPlots.amount}
         />
+      </Paper>
+      <Paper style={{ marginTop: 100, marginBottom: 50 }}>
+        {QueuesDataGrid}
       </Paper>
     </Container>
   );

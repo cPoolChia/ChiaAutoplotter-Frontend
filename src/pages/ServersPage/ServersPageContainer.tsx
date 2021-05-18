@@ -38,7 +38,7 @@ export const ServersPageContainer: React.FC = () => {
     try {
       const data: ServerType = await ServerService.addServer(fields);
       if (servers) {
-        setServers({ ...servers, items: [...servers?.items, data] });
+        setServers({ ...servers, items: [...servers.items, data] });
       } else {
         setServers({ amount: 1, items: [data] });
       }
@@ -60,7 +60,10 @@ export const ServersPageContainer: React.FC = () => {
     }
   }
 
-  async function updateServer(id: string, fields: any) {
+  async function updateServer(
+    id: string,
+    fields: ConfigurableServerFieldsType
+  ) {
     try {
       const data = await ServerService.updateServer(id, fields);
       if (servers) {
@@ -184,8 +187,6 @@ export const ServersPageContainer: React.FC = () => {
           columns={columns}
           total={servers.amount}
           title="Servers List"
-          addHandler={addServer}
-          deleteHandler={deleteServer}
           editHandler={editCellHandler}
           Toolbox={
             <Toolbox

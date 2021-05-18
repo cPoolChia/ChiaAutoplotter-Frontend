@@ -4,10 +4,9 @@ import { FieldsType } from "../AddModal/types";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { Button } from "@material-ui/core";
 import { useStyles } from "./styles";
-import { ConfigurableServerFieldsType } from "../../services/ServerService/types";
 
 interface Props {
-  submitHandler: (fields: ConfigurableServerFieldsType) => Promise<void>;
+  submitHandler: (fields: any) => Promise<void>;
   modalFields: FieldsType[];
   title: string;
 }

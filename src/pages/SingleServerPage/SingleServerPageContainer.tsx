@@ -19,11 +19,18 @@ import { Link, useParams } from "react-router-dom";
 import { Toolbox } from "../../components/Toolbox";
 import { FieldsType } from "../../components/AddModal/types";
 import { SingleServerPage } from "./SingleServerPage";
+import {
+  ConfigurableQueueFieldsType,
+  QueuesArrayType,
+  QueueType,
+} from "../../services/PlotsService/types";
+import PlotsService from "../../services/PlotsService";
 
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
   const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
   const [createdPlots, setCreatedPlots] = useState<PlotsArrayType>();
+  const [queues, setQueues] = useState<QueuesArrayType>();
 
   const { id }: any = useParams();
 
@@ -42,29 +49,98 @@ export const SingleServerPageContainer: React.FC = () => {
     setCreatedPlots(data);
   }, [id]);
 
+  const getQueueData = useCallback(async (): Promise<void> => {
+    const data = await ServerService.getQueues(id);
+    setQueues(data);
+  }, [id]);
+
+  async function addPlotQueue(
+    fields: ConfigurableQueueFieldsType
+  ): Promise<void> {
+    try {
+      const data: QueueType = await PlotsService.addPlotQueue(id, fields);
+      if (queues) {
+        setQueues({ ...queues, items: [...queues.items, data] });
+      } else {
+        setQueues({ amount: 1, items: [data] });
+      }
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  }
+
+  async function updatePlotQueue(
+    id: string,
+    fields: ConfigurableQueueFieldsType
+  ) {
+    try {
+      const data = await PlotsService.updatePlotQueue(id, fields);
+      if (queues) {
+        const idx = queues.items.map((queue) => queue.id).indexOf(id);
+        const queueItems = [...queues.items];
+        queueItems.splice(idx, 1, data);
+        setQueues({
+          ...queues,
+          items: queueItems,
+        });
+      }
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  }
+
+  const editCellHandler = async (params: GridEditCellPropsParams) => {
+    try {
+      await updatePlotQueue(params.id.toString(), {
+        [params.field]: params.props.value,
+      });
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  };
+
   const modalFields: FieldsType[] = [
     {
-      name: "hostname",
-      id: "hostname",
-      label: "Hostname",
+      name: "create_dir",
+      id: "create_dir",
+      label: "Create Dir.",
     },
     {
-      name: "username",
-      id: "username",
-      label: "Username",
+      name: "plot_dir",
+      id: "plot_dir",
+      label: "Plot Dir.",
     },
     {
-      name: "password",
-      id: "password",
-      label: "Password",
+      name: "pool_key",
+      id: "pool_key",
+      label: "Pool key",
+    },
+    {
+      name: "farmer_key",
+      id: "farmer_key",
+      label: "Farmer key",
+    },
+    {
+      name: "plots_amount",
+      id: "plots_amount",
+      label: "Plots Amount",
     },
   ];
 
+  const initialRequests = useCallback(
+    () =>
+      Promise.all([
+        getServerData(),
+        getLocatedPlots(),
+        getCreatedPlots(),
+        getQueueData(),
+      ]),
+    [getServerData, getLocatedPlots, getCreatedPlots, getQueueData]
+  );
+
   useEffect(() => {
-    getServerData();
-    getLocatedPlots();
-    getCreatedPlots();
-  }, [id, getServerData, getLocatedPlots, getCreatedPlots]);
+    initialRequests();
+  }, [initialRequests]);
 
   const columns = [
     {
@@ -76,25 +152,47 @@ export const SingleServerPageContainer: React.FC = () => {
       },
     },
     {
-      field: "name",
-      headerName: "Name",
+      field: "plotTaskId",
+      headerName: "Plot Task ID",
+      width: 350,
+    },
+    {
+      field: "serverId",
+      headerName: "Server ID",
+      width: 320,
+      renderCell: (params: GridCellParams) => {
+        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
+      },
+    },
+    {
+      field: "createDir",
+      headerName: "Create Dir.",
       width: 150,
+      editable: true,
     },
     {
-      field: "createdServerId",
-      headerName: "Created Server ID",
-      width: 320,
-      renderCell: (params: GridCellParams) => {
-        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-      },
+      field: "plotDir",
+      headerName: "Plot Dir.",
+      width: 150,
+      editable: true,
     },
     {
-      field: "locatedServerId",
-      headerName: "Located Server ID",
+      field: "poolKey",
+      headerName: "Pool Key",
       width: 320,
-      renderCell: (params: GridCellParams) => {
-        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-      },
+      editable: true,
+    },
+    {
+      field: "farmerKey",
+      headerName: "Farmer Key",
+      width: 320,
+      editable: true,
+    },
+    {
+      field: "plotsAmount",
+      headerName: "Plots Amount",
+      width: 130,
+      editable: true,
     },
     {
       field: "created",
@@ -105,30 +203,27 @@ export const SingleServerPageContainer: React.FC = () => {
         return <>{new Date(value).toLocaleString()}</>;
       },
     },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
   ];
 
   return serverData &&
+    queues &&
     locatedPlots !== undefined &&
     createdPlots !== undefined ? (
     <SingleServerPage
+      locatedPlots={locatedPlots}
+      createdPlots={createdPlots}
+      serverData={serverData}
       QueuesDataGrid={
         <DataGridContainer
-          rows={servers.items}
+          rows={queues.items}
           columns={columns}
-          total={servers.amount}
-          title="Servers List"
-          addHandler={addServer}
-          deleteHandler={deleteServer}
+          total={queues.amount}
+          title="Plot Queues List"
           editHandler={editCellHandler}
           Toolbox={
             <Toolbox
-              title="Add Server"
-              submitHandler={addServer}
+              title="Add Queue"
+              submitHandler={addPlotQueue}
               modalFields={modalFields}
             />
           }
