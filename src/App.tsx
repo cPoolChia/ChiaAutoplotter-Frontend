@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { DefaultLayout } from "./layouts/DefaultLayout";
+import { LoginLayout } from "./layouts/LoginLayout";
+import { ServersPageContainer as ServersPage } from "./pages/ServersPage/ServersPageContainer";
+import { LoginPage } from "./pages/LoginPage";
+import { SingleServerPageContainer as SingleServerPage } from "./pages/SingleServerPage/SingleServerPageContainer";
+import "react-notifications/lib/notifications.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        {/* <PrivateRoute path="/servers"> */}
+        <Route path="/servers">
+          <DefaultLayout>
+            <ServersPage />
+          </DefaultLayout>
+        </Route>
+        <Route path="/server/:id">
+          <DefaultLayout>
+            <SingleServerPage />
+          </DefaultLayout>
+        </Route>
+        {/* </PrivateRoute> */}
+        <Route exact path="/login">
+          <LoginLayout>
+            <LoginPage />
+          </LoginLayout>
+        </Route>
+        {/* <Route path="/">
+          <IndexPage />
+        </Route> */}
+      </Switch>
+    </BrowserRouter>
   );
 }
 
