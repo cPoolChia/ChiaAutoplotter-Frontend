@@ -35,10 +35,11 @@ class PlotsService {
     serverId: string,
     fields: ConfigurableQueueFieldsType
   ): Promise<QueueType> {
+    const plotsAmount = Number(fields.plotsAmount);
     const { data }: AxiosResponse<QueueType> = await axiosRequest({
       url: this.url + "/plot/queue",
       method: "POST",
-      data: { ...fields, server_id: serverId },
+      data: { ...fields, serverId, plotsAmount },
       headers: { authorization: true },
     });
     return data;

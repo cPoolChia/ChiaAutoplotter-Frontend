@@ -101,28 +101,28 @@ export const SingleServerPageContainer: React.FC = () => {
 
   const modalFields: FieldsType[] = [
     {
-      name: "create_dir",
-      id: "create_dir",
+      name: "createDir",
+      id: "createDir",
       label: "Create Dir.",
     },
     {
-      name: "plot_dir",
-      id: "plot_dir",
+      name: "plotDir",
+      id: "plotDir",
       label: "Plot Dir.",
     },
     {
-      name: "pool_key",
-      id: "pool_key",
+      name: "poolKey",
+      id: "poolKey",
       label: "Pool key",
     },
     {
-      name: "farmer_key",
-      id: "farmer_key",
+      name: "farmerKey",
+      id: "farmerKey",
       label: "Farmer key",
     },
     {
-      name: "plots_amount",
-      id: "plots_amount",
+      name: "plotsAmount",
+      id: "plotsAmount",
       label: "Plots Amount",
     },
   ];
@@ -156,14 +156,14 @@ export const SingleServerPageContainer: React.FC = () => {
       headerName: "Plot Task ID",
       width: 350,
     },
-    {
-      field: "serverId",
-      headerName: "Server ID",
-      width: 320,
-      renderCell: (params: GridCellParams) => {
-        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-      },
-    },
+    // {
+    //   field: "serverId",
+    //   headerName: "Server ID",
+    //   width: 320,
+    //   renderCell: (params: GridCellParams) => {
+    //     return <Link to={`/server/${params.id}/`}>{params.value}</Link>;
+    //   },
+    // },
     {
       field: "createDir",
       headerName: "Create Dir.",

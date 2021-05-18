@@ -6,11 +6,11 @@ export interface QueuesArrayType {
 }
 
 export interface ConfigurableQueueFieldsType {
-  create_dir?: string;
-  plot_dir?: string;
-  pool_key?: string;
-  farmer_key?: string;
-  plots_amount?: number;
+  createDir?: string;
+  plotDir?: string;
+  poolKey?: string;
+  farmerKey?: string;
+  plotsAmount?: number;
 }
 
 export interface QueueType {
