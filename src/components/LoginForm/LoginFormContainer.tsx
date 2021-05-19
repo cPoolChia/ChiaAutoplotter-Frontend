@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { LoginForm } from "./LoginForm";
 import { PasswordResetForm } from "./PasswordResetForm";
 import authService from "../../services/AuthService";
+import AuthService from "../../services/AuthService";
 
 enum FormState {
   Default = "DEFAULT",
@@ -26,12 +27,15 @@ export const LoginFormContainer: React.FC = () => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  const loginHandler = (e: React.FormEvent<HTMLFormElement>): void => {
+  const loginHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     const { email, password, rememberMe } = e as any;
     try {
+      await AuthService.login(email, password, rememberMe);
+      history.push("/servers");
     } catch (error) {
-      console.error(error);
-      NotificationManager.error(error, "ERROR_MSG");
+      NotificationManager.error(error);
     }
   };
 

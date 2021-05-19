@@ -7,43 +7,47 @@ import { ServersPageContainer as ServersPage } from "./pages/ServersPage/Servers
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SingleServerPageContainer as SingleServerPage } from "./pages/SingleServerPage/SingleServerPageContainer";
 import { SinglePlotPageContainer as SinglePlotPage } from "./pages/SinglePlotPage/SinglePlotPageContainer";
-import "react-notifications/lib/notifications.css";
+import { NotificationContainer } from "react-notifications";
 import { PlotsPageContainer as PlotsPage } from "./pages/PlotsPage/PlotsPageContainer";
+import "react-notifications/lib/notifications.css";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/servers/:id">
-          <DefaultLayout>
-            <SingleServerPage />
-          </DefaultLayout>
-        </Route>
-        <Route path="/servers">
-          <DefaultLayout>
-            <ServersPage />
-          </DefaultLayout>
-        </Route>
-        <Route path="/plots/:id">
-          <DefaultLayout>
-            <SinglePlotPage />
-          </DefaultLayout>
-        </Route>
-        <Route path="/plots">
-          <DefaultLayout>
-            <PlotsPage />
-          </DefaultLayout>
-        </Route>
-        <Route exact path="/login">
-          <LoginLayout>
-            <LoginPage />
-          </LoginLayout>
-        </Route>
-        {/* <Route path="/">
+    <>
+      <BrowserRouter>
+        <Switch>
+          <PrivateRoute path="/servers/:id">
+            <DefaultLayout>
+              <SingleServerPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/servers">
+            <DefaultLayout>
+              <ServersPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/plots/:id">
+            <DefaultLayout>
+              <SinglePlotPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/plots">
+            <DefaultLayout>
+              <PlotsPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <Route exact path="/login">
+            <LoginLayout>
+              <LoginPage />
+            </LoginLayout>
+          </Route>
+          {/* <Route path="/">
           <IndexPage />
         </Route> */}
-      </Switch>
-    </BrowserRouter>
+        </Switch>
+      </BrowserRouter>
+      <NotificationContainer />
+    </>
   );
 }
 

@@ -45,6 +45,7 @@ export const Sidebar: React.VFC = () => {
 
   const handleLogout = async () => {
     await authService.logout();
+    history.push("/login");
   };
 
   return (
