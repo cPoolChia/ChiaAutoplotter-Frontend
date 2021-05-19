@@ -118,7 +118,7 @@ export const ServersPageContainer: React.FC = () => {
       headerName: "ID",
       width: 320,
       renderCell: (params: GridCellParams) => {
-        return <Link to={`/server/${params.id}/`}>{params.value}</Link>;
+        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
       },
     },
     {

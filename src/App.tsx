@@ -4,26 +4,36 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { LoginLayout } from "./layouts/LoginLayout";
 import { ServersPageContainer as ServersPage } from "./pages/ServersPage/ServersPageContainer";
-import { LoginPage } from "./pages/LoginPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SingleServerPageContainer as SingleServerPage } from "./pages/SingleServerPage/SingleServerPageContainer";
+import { SinglePlotPageContainer as SinglePlotPage } from "./pages/SinglePlotPage/SinglePlotPageContainer";
 import "react-notifications/lib/notifications.css";
+import { PlotsPageContainer as PlotsPage } from "./pages/PlotsPage/PlotsPageContainer";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        {/* <PrivateRoute path="/servers"> */}
+        <Route path="/servers/:id">
+          <DefaultLayout>
+            <SingleServerPage />
+          </DefaultLayout>
+        </Route>
         <Route path="/servers">
           <DefaultLayout>
             <ServersPage />
           </DefaultLayout>
         </Route>
-        <Route path="/server/:id">
+        <Route path="/plots/:id">
           <DefaultLayout>
-            <SingleServerPage />
+            <SinglePlotPage />
           </DefaultLayout>
         </Route>
-        {/* </PrivateRoute> */}
+        <Route path="/plots">
+          <DefaultLayout>
+            <PlotsPage />
+          </DefaultLayout>
+        </Route>
         <Route exact path="/login">
           <LoginLayout>
             <LoginPage />

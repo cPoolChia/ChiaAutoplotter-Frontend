@@ -3,13 +3,26 @@ import { config as globalConfig } from "../../config";
 import { axiosRequest } from "../../utils/axiosRequest";
 import { requestDecorator } from "../../utils/requestDecorator";
 import { PlotsArrayType } from "../ServerService/types";
-import { ConfigurableQueueFieldsType, QueueType } from "./types";
+import {
+  ConfigurableQueueFieldsType,
+  QueuesArrayType,
+  QueueType,
+} from "./types";
 
 class PlotsService {
   readonly url: string;
 
   constructor(config: typeof globalConfig) {
     this.url = config.serverUrl;
+  }
+
+  @requestDecorator()
+  public async getAllPlotsQueue(): Promise<QueuesArrayType> {
+    const { data }: AxiosResponse<QueuesArrayType> = await axiosRequest({
+      url: this.url + "/plot/queue/",
+      headers: { authorization: true },
+    });
+    return data;
   }
 
   @requestDecorator()

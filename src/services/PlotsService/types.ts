@@ -11,6 +11,7 @@ export interface ConfigurableQueueFieldsType {
   poolKey?: string;
   farmerKey?: string;
   plotsAmount?: number;
+  serverId?: string;
 }
 
 export interface QueueType {

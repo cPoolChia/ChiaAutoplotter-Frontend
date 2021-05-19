@@ -9,12 +9,15 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
-import { iconMap } from "../../utils/serverDataIconModifier";
+import {
+  dataKeyMap,
+  iconMap,
+  valueFormatter,
+} from "../../utils/dataListModifier";
 import { useStyles } from "./styles";
-import { ServerType } from "../../services/ServerService/types";
 
 interface Props {
-  data: ServerType;
+  data: { [key: string]: any };
   title: string;
 }
 
@@ -36,7 +39,10 @@ export const DataList: React.FC<Props> = ({ data, title }) => {
                     <ListItemAvatar>
                       <Avatar className={classes.avatar}>{iconMap[key]}</Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={key} secondary={value} />
+                    <ListItemText
+                      primary={dataKeyMap[key]}
+                      secondary={valueFormatter(key, value)}
+                    />
                   </ListItem>
                 </Grid>
               ))}

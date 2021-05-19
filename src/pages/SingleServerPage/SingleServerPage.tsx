@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { Breadcrumbs, Container, Paper, Typography } from "@material-ui/core";
 import { GridCellParams } from "@material-ui/data-grid";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DataList } from "../../components/DataList/DataList";
-import ServerService from "../../services/ServerService";
 import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 

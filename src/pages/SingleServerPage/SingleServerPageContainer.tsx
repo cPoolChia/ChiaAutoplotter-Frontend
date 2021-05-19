@@ -1,20 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   GridCellParams,
-  GridColumns,
   GridEditCellPropsParams,
 } from "@material-ui/data-grid";
 import { NotificationManager } from "react-notifications";
 import ServerService from "../../services/ServerService";
-import {
-  ConfigurableServerFieldsType,
-  PlotsArrayType,
-  ServersArrayType,
-  ServerType,
-} from "../../services/ServerService/types";
+import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
 import { DataGridContainer } from "../../components/EditableDataGrid/DataGridContainer";
-import { Button } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Link, useParams } from "react-router-dom";
 import { Toolbox } from "../../components/Toolbox";
 import { FieldsType } from "../../components/AddModal/types";
@@ -161,7 +153,7 @@ export const SingleServerPageContainer: React.FC = () => {
     //   headerName: "Server ID",
     //   width: 320,
     //   renderCell: (params: GridCellParams) => {
-    //     return <Link to={`/server/${params.id}/`}>{params.value}</Link>;
+    //     return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
     //   },
     // },
     {
