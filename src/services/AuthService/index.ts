@@ -45,6 +45,8 @@ class AuthService {
   ): Promise<string | Error> {
     if (shouldBeStoredInLocalStorage) {
       this.setStorage("localStorage");
+    } else {
+      this.setStorage("sessionStorage");
     }
 
     const params = new URLSearchParams();

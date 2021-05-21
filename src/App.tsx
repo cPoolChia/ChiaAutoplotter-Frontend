@@ -10,6 +10,7 @@ import { SinglePlotPageContainer as SinglePlotPage } from "./pages/SinglePlotPag
 import { NotificationContainer } from "react-notifications";
 import { PlotsPageContainer as PlotsPage } from "./pages/PlotsPage/PlotsPageContainer";
 import "react-notifications/lib/notifications.css";
+import { TaskPage } from "./pages/TaskPage/TaskPage";
 
 function App() {
   return (
@@ -29,6 +30,11 @@ function App() {
           <PrivateRoute path="/plots/:id">
             <DefaultLayout>
               <SinglePlotPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/tasks/:id">
+            <DefaultLayout>
+              <TaskPage />
             </DefaultLayout>
           </PrivateRoute>
           <PrivateRoute path="/plots">

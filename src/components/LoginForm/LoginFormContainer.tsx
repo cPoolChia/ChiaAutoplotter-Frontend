@@ -31,6 +31,7 @@ export const LoginFormContainer: React.FC = () => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     const { email, password, rememberMe } = e as any;
+    console.log(rememberMe);
     try {
       await AuthService.login(email, password, rememberMe);
       history.push("/servers");
