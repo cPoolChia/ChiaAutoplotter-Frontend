@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { LoginLayout } from "./layouts/LoginLayout";
@@ -46,6 +46,9 @@ function App() {
             <LoginLayout>
               <LoginPage />
             </LoginLayout>
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/servers" />
           </Route>
           {/* <Route path="/">
           <IndexPage />
