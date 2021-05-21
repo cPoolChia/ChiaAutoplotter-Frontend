@@ -47,9 +47,9 @@ function App() {
               <LoginPage />
             </LoginLayout>
           </Route>
-          <Route exact path="/">
+          <PrivateRoute path="/">
             <Redirect to="/servers" />
-          </Route>
+          </PrivateRoute>
           {/* <Route path="/">
           <IndexPage />
         </Route> */}
