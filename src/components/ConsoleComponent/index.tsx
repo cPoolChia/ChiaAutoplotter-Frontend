@@ -28,29 +28,29 @@ export const ConsoleComponent: React.FC<Props> = ({ logs }) => {
 
   return (
     <Container>
-      {logs.map((log) => {
+      {logs.map((log, idx) => {
         return (
-          <>
-            <p key={log.timestamp}>
+          <div key={log.timestamp + idx}>
+            <p>
               {new Date(log.timestamp * 1000).toLocaleString() +
                 " " +
                 log.state}
             </p>
             <div>
               {log.data && isDataSuccessType(log.data) ? (
-                log.data.console?.map((c) => (
-                  <>
+                log.data.console?.map((c, idx) => (
+                  <div key={c.time + idx}>
                     <p>{new Date(c.time * 1000).toLocaleString()}</p>
                     <p>
                       {"> "}
                       {c.command}
                     </p>
                     <div>
-                      {stdoutParser(c.stdout).map((command) => (
-                        <p>{command}</p>
+                      {stdoutParser(c.stdout).map((command, idx) => (
+                        <p key={command + idx}>{command}</p>
                       ))}
                     </div>
-                  </>
+                  </div>
                 ))
               ) : log.data && !isDataSuccessType(log.data) ? (
                 <>
@@ -59,7 +59,7 @@ export const ConsoleComponent: React.FC<Props> = ({ logs }) => {
                 </>
               ) : null}
             </div>
-          </>
+          </div>
         );
       })}
     </Container>
