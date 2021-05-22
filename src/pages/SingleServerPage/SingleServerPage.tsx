@@ -55,14 +55,12 @@ const plotsColumns = [
 interface Props {
   QueuesDataGrid: React.ReactChild;
   locatedPlots: PlotsArrayType;
-  createdPlots: PlotsArrayType;
   serverData: ServerType;
 }
 
 export const SingleServerPage: React.FC<Props> = ({
   QueuesDataGrid,
   serverData,
-  createdPlots,
   locatedPlots,
 }) => {
   return (
@@ -74,15 +72,6 @@ export const SingleServerPage: React.FC<Props> = ({
         <Typography>{serverData.id}</Typography>
       </Breadcrumbs>
       <DataList title="Server Data" data={serverData} />
-      <Paper style={{ marginTop: 50, marginBottom: 50 }}>
-        <DataGridComponent
-          title="Created Plots"
-          style={{ width: "100%", height: 500 }}
-          rows={createdPlots.items}
-          columns={plotsColumns}
-          total={createdPlots.amount}
-        />
-      </Paper>
       <Paper style={{ marginTop: 100, marginBottom: 50 }}>
         <DataGridComponent
           title="Located Plots"

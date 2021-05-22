@@ -21,7 +21,6 @@ import PlotsService from "../../services/PlotsService";
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
   const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
-  const [createdPlots, setCreatedPlots] = useState<PlotsArrayType>();
   const [queues, setQueues] = useState<QueuesArrayType>();
 
   const { id }: any = useParams();
@@ -34,11 +33,6 @@ export const SingleServerPageContainer: React.FC = () => {
   const getLocatedPlots = useCallback(async (): Promise<void> => {
     const data = await ServerService.getLocatedPlots(id);
     setLocatedPlots(data);
-  }, [id]);
-
-  const getCreatedPlots = useCallback(async (): Promise<void> => {
-    const data = await ServerService.getCreatedPlots(id);
-    setCreatedPlots(data);
   }, [id]);
 
   const getQueueData = useCallback(async (): Promise<void> => {
@@ -120,14 +114,8 @@ export const SingleServerPageContainer: React.FC = () => {
   ];
 
   const initialRequests = useCallback(
-    () =>
-      Promise.all([
-        getServerData(),
-        getLocatedPlots(),
-        getCreatedPlots(),
-        getQueueData(),
-      ]),
-    [getServerData, getLocatedPlots, getCreatedPlots, getQueueData]
+    () => Promise.all([getServerData(), getLocatedPlots(), getQueueData()]),
+    [getServerData, getLocatedPlots, getQueueData]
   );
 
   useEffect(() => {
@@ -197,13 +185,9 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
-  return serverData &&
-    queues &&
-    locatedPlots !== undefined &&
-    createdPlots !== undefined ? (
+  return serverData && queues && locatedPlots !== undefined ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
-      createdPlots={createdPlots}
       serverData={serverData}
       QueuesDataGrid={
         <DataGridContainer
