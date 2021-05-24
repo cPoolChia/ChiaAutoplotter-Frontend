@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { DataList } from "../../components/DataList/DataList";
 import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
+import { useStyles } from "./styles";
 
 const plotsColumns = [
   {
@@ -63,16 +64,17 @@ export const SingleServerPage: React.FC<Props> = ({
   serverData,
   locatedPlots,
 }) => {
+  const classes = useStyles();
   return (
     <Container>
-      <Breadcrumbs style={{ marginTop: 10, marginBottom: 20 }}>
-        <Link style={{ color: "black", textDecoration: "none" }} to="/servers">
+      <Breadcrumbs className={classes.breadcrumbs}>
+        <Link className={classes.breadcrumbsLink} to="/servers">
           Servers
         </Link>
         <Typography>{serverData.id}</Typography>
       </Breadcrumbs>
       <DataList title="Server Data" data={serverData} />
-      <Paper style={{ marginTop: 100, marginBottom: 50 }}>
+      <Paper className={classes.paper}>
         <DataGridComponent
           title="Located Plots"
           style={{ width: "100%", height: 500 }}
@@ -81,9 +83,7 @@ export const SingleServerPage: React.FC<Props> = ({
           total={locatedPlots.amount}
         />
       </Paper>
-      <Paper style={{ marginTop: 100, marginBottom: 50 }}>
-        {QueuesDataGrid}
-      </Paper>
+      {QueuesDataGrid}
     </Container>
   );
 };

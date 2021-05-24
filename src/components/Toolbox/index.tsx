@@ -4,6 +4,7 @@ import { FieldsType } from "../AddModal/types";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { Button } from "@material-ui/core";
 import { useStyles } from "./styles";
+import { NotificationManager } from "react-notifications";
 
 interface Props {
   submitHandler: (fields: any) => Promise<void>;
@@ -19,8 +20,12 @@ export const Toolbox: React.FC<Props> = ({
   const [open, setOpen] = useState<boolean>(false);
 
   const submit = async (fields: any) => {
-    await submitHandler(fields);
-    setOpen(false);
+    try {
+      await submitHandler(fields);
+      setOpen(false);
+    } catch (error) {
+      NotificationManager.error(error);
+    }
   };
 
   const classes = useStyles();

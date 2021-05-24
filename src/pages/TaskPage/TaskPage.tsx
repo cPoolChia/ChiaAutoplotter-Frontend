@@ -27,7 +27,7 @@ export interface LogsType {
 
 export const TaskPage: React.FC = () => {
   const [ws, setWs] = useState<WebSocket>();
-  const [logs, setLogs] = useState<LogsType[]>([]);
+  const [log, setLog] = useState<LogsType>();
   const params: any = useParams();
 
   useEffect((): void => {
@@ -42,14 +42,14 @@ export const TaskPage: React.FC = () => {
       ws.onmessage = (event: MessageEvent<any>) => {
         const data = JSON.parse(event.data);
         console.log(data);
-        setLogs([...logs, data]);
+        setLog(data);
       };
     }
-  }, [ws, logs]);
+  }, [ws, log]);
 
-  return (
+  return log ? (
     <div>
-      <ConsoleComponent logs={logs} />
+      <ConsoleComponent log={log} />
     </div>
-  );
+  ) : null;
 };

@@ -26,18 +26,30 @@ export const SingleServerPageContainer: React.FC = () => {
   const { id }: any = useParams();
 
   const getServerData = useCallback(async (): Promise<void> => {
-    const data = await ServerService.getServer(id);
-    setServerData(data);
+    try {
+      const data = await ServerService.getServer(id);
+      setServerData(data);
+    } catch (error) {
+      NotificationManager.error(error);
+    }
   }, [id]);
 
   const getLocatedPlots = useCallback(async (): Promise<void> => {
-    const data = await ServerService.getLocatedPlots(id);
-    setLocatedPlots(data);
+    try {
+      const data = await ServerService.getLocatedPlots(id);
+      setLocatedPlots(data);
+    } catch (error) {
+      NotificationManager.error(error);
+    }
   }, [id]);
 
   const getQueueData = useCallback(async (): Promise<void> => {
-    const data = await ServerService.getQueues(id);
-    setQueues(data);
+    try {
+      const data = await ServerService.getQueues(id);
+      setQueues(data);
+    } catch (error) {
+      NotificationManager.error(error);
+    }
   }, [id]);
 
   async function addPlotQueue(

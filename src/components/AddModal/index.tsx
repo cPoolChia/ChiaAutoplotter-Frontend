@@ -30,8 +30,8 @@ export const AddModal: React.FC<Props> = ({
   const handleClose = () => setOpen(false);
 
   const enterKeyListener = (event: KeyboardEvent) => {
-    console.log("enter pressed");
     if (event.key === "Enter") {
+      console.log("enter pressed");
       btnRef?.current?.click();
     }
   };

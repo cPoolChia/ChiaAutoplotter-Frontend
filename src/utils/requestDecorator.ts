@@ -11,7 +11,9 @@ export const requestDecorator = () => {
         const result = await originalRequest.apply(this, args);
         return result;
       } catch (error) {
-        throw new Error(error);
+        throw new Error(
+          error.response.data.detail || error.response.data.message
+        );
       }
     };
   };

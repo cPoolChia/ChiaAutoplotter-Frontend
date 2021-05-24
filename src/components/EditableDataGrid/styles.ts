@@ -3,6 +3,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
+      height: 500,
       "& .MuiDataGrid-cellEditing": {
         backgroundColor: "rgb(255,215,115, 0.19)",
         color: "#1a3e72",

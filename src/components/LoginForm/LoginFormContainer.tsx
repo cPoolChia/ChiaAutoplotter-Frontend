@@ -36,7 +36,7 @@ export const LoginFormContainer: React.FC = () => {
       await AuthService.login(email, password, rememberMe);
       history.push("/servers");
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   };
 

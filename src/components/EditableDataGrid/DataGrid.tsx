@@ -21,15 +21,12 @@ export const DataGridComponent: React.FC<Props> = ({
   const classes = useStyles();
 
   return (
-    <div style={{ height: "auto", width: "100%" }}>
-      <DataGrid
-        className={classes.root}
-        disableColumnMenu={true}
-        autoHeight={true}
-        onEditCellChangeCommitted={editHandler}
-        rows={rows}
-        columns={columns}
-      />
-    </div>
+    <DataGrid
+      className={classes.root}
+      disableColumnMenu={true}
+      onEditCellChangeCommitted={editHandler}
+      rows={rows}
+      columns={columns}
+    />
   );
 };

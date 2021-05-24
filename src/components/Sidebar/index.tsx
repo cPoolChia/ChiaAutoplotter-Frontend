@@ -13,6 +13,7 @@ import DnsIcon from "@material-ui/icons/Dns";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { ReactComponent as CpoolLogo } from "../../assets/images/cpool-2.svg";
 import { useStyles } from "./styles";
+import { NotificationManager } from "react-notifications";
 
 interface ListItems {
   name: string;
@@ -44,8 +45,12 @@ export const Sidebar: React.VFC = () => {
   };
 
   const handleLogout = async () => {
-    await authService.logout();
-    history.push("/login");
+    try {
+      await authService.logout();
+      history.push("/login");
+    } catch (error) {
+      NotificationManager.error(error);
+    }
   };
 
   return (

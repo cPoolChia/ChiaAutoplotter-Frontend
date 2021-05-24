@@ -80,7 +80,7 @@ export const SinglePlotPage: React.FC<Props> = ({ queueData, plotsData }) => {
         <Typography>{queueData.id}</Typography>
       </Breadcrumbs>
       <DataList title="Queue Data" data={queueData} />
-      <Paper style={{ marginTop: 50, marginBottom: 50 }}>
+      <Paper style={{ marginTop: 50, marginBottom: 50, height: 600 }}>
         <DataGridComponent
           title="Created Plots"
           style={{ width: "100%", height: 500 }}
