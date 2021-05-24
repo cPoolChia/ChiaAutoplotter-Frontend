@@ -24,7 +24,7 @@ export const Toolbox: React.FC<Props> = ({
       await submitHandler(fields);
       setOpen(false);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   };
 

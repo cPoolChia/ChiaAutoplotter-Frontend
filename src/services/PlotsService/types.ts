@@ -1,4 +1,4 @@
-import { UUID } from "../ServerService/types";
+import { UUID } from "../types";
 
 export interface QueuesArrayType {
   amount: number;

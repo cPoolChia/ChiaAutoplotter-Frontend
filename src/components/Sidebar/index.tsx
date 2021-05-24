@@ -49,7 +49,7 @@ export const Sidebar: React.VFC = () => {
       await authService.logout();
       history.push("/login");
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   };
 

@@ -30,7 +30,7 @@ export const SingleServerPageContainer: React.FC = () => {
       const data = await ServerService.getServer(id);
       setServerData(data);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   }, [id]);
 
@@ -39,7 +39,7 @@ export const SingleServerPageContainer: React.FC = () => {
       const data = await ServerService.getLocatedPlots(id);
       setLocatedPlots(data);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   }, [id]);
 
@@ -48,7 +48,7 @@ export const SingleServerPageContainer: React.FC = () => {
       const data = await ServerService.getQueues(id);
       setQueues(data);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   }, [id]);
 

@@ -29,7 +29,7 @@ export const SinglePlotPageContainer: React.FC = () => {
       const data = await PlotsService.getPlotQueueData(id);
       setQueueData(data);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   }, [id]);
 
@@ -38,7 +38,7 @@ export const SinglePlotPageContainer: React.FC = () => {
       const data = await PlotsService.getQueuePlotsData(id);
       setPlotsData(data);
     } catch (error) {
-      NotificationManager.error(error);
+      NotificationManager.error(error.message);
     }
   }, [id]);
 
