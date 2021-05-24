@@ -3,4 +3,5 @@ export interface FieldsType {
   id?: string;
   label?: string;
   autoComplete?: string;
+  multiple?: boolean;
 }

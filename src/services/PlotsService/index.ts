@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { config as globalConfig } from "../../config";
 import { axiosRequest } from "../../utils/axiosRequest";
 import { requestDecorator } from "../../utils/requestDecorator";
-import { PlotsArrayType } from "../ServerService/types";
+import { PlotsArrayType } from "../PlotsService/types";
 import {
   ConfigurableQueueFieldsType,
   QueuesArrayType,

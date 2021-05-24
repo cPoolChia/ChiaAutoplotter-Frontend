@@ -46,6 +46,7 @@ export const dataKeyMap: { [key: string]: any } = {
   poolKey: "Pool Key",
   farmerKey: "Farmer Key",
   plotsAmount: "Plots Amount",
+  name: "Name",
 };
 
 export function valueFormatter(key: string, value: any) {

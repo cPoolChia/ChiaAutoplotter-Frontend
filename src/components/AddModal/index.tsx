@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -10,6 +10,7 @@ import {
 import { TextField } from "mui-rff";
 import { Form } from "react-final-form";
 import { FieldsType } from "./types";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 interface Props {
   open: boolean;
@@ -26,6 +27,7 @@ export const AddModal: React.FC<Props> = ({
   fields,
   title,
 }) => {
+  const [currFields, setCurrFields] = useState<FieldsType[]>(fields);
   const btnRef = useRef<any>(null);
   const handleClose = () => setOpen(false);
 
@@ -36,12 +38,30 @@ export const AddModal: React.FC<Props> = ({
     }
   };
 
+  const addFieldHandler = (field: FieldsType) => {
+    const newField = Object.assign({}, field);
+    const nameLength = field.name.length;
+    const nameWithoutId = field.name.slice(0, nameLength - 1);
+    const id = Number(field.name.slice(nameLength - 1, nameLength));
+    newField.name = nameWithoutId + (id + 1);
+    newField.id = field.id ? field.id + 1 : undefined;
+    setCurrFields([...currFields, newField]);
+  };
+
+  const isFieldLastMultiple = (field: FieldsType) => {
+    const length = currFields.length;
+    return currFields[length - 1] === field ? true : false;
+  };
+
   useEffect(() => {
     if (open) {
       window.addEventListener("keypress", enterKeyListener);
     }
-    return () => window.removeEventListener("keypress", enterKeyListener);
-  }, [open]);
+    return () => {
+      window.removeEventListener("keypress", enterKeyListener);
+      setTimeout(() => setCurrFields(fields), 500); //for animation to be smooth
+    };
+  }, [open, fields]);
 
   return (
     <Dialog
@@ -64,7 +84,7 @@ export const AddModal: React.FC<Props> = ({
                 justify="center"
                 alignItems="stretch"
               >
-                {fields.map((field) => (
+                {currFields.map((field) => (
                   <Grid key={field.name} item xs={12}>
                     <TextField
                       fullWidth
@@ -74,6 +94,17 @@ export const AddModal: React.FC<Props> = ({
                       name={field.name}
                       autoComplete={field.autoComplete}
                     />
+                    {field.multiple && isFieldLastMultiple(field) ? (
+                      <Button
+                        style={{ marginTop: 15 }}
+                        color="primary"
+                        variant="contained"
+                        onClick={() => addFieldHandler(field)}
+                      >
+                        <AddCircleIcon style={{ marginRight: 8 }} />
+                        {`Add ${field.label}`}
+                      </Button>
+                    ) : null}
                   </Grid>
                 ))}
               </Grid>

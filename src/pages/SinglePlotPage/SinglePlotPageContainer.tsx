@@ -1,21 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  GridCellParams,
-  GridEditCellPropsParams,
-} from "@material-ui/data-grid";
+
 import { NotificationManager } from "react-notifications";
-import ServerService from "../../services/ServerService";
-import { DataGridContainer } from "../../components/EditableDataGrid/DataGridContainer";
-import { Link, useParams } from "react-router-dom";
-import { Toolbox } from "../../components/Toolbox";
-import { FieldsType } from "../../components/AddModal/types";
+import { useParams } from "react-router-dom";
 import { SinglePlotPage } from "./SinglePlotPage";
-import {
-  ConfigurableQueueFieldsType,
-  QueuesArrayType,
-  QueueType,
-} from "../../services/PlotsService/types";
-import { PlotsArrayType } from "../../services/ServerService/types";
+import { QueueType } from "../../services/PlotsService/types";
+import { PlotsArrayType } from "../../services/PlotsService/types";
 import PlotsService from "../../services/PlotsService";
 
 export const SinglePlotPageContainer: React.FC = () => {

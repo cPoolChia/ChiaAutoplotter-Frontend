@@ -40,7 +40,7 @@ export const DataList: React.FC<Props> = ({ data, title }) => {
                       <Avatar className={classes.avatar}>{iconMap[key]}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={dataKeyMap[key]}
+                      primary={dataKeyMap[key] || key}
                       secondary={valueFormatter(key, value)}
                     />
                   </ListItem>

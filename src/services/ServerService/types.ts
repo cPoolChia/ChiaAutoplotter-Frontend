@@ -2,30 +2,17 @@ import { UUID } from "../types";
 
 type ServerStatusType = "pending" | "failed" | "approved";
 
-type PlotStatusType = "plotting" | "plotted" | "harvesting" | "transferred";
-
 export interface ServerType {
   id: UUID;
+  name: string;
   hostname: string;
   username: string;
   password: string;
+  poolKey: string;
+  farmerKey: string;
   initTaskId: UUID;
   created: Date;
   status: ServerStatusType;
-}
-
-export interface PlotType {
-  id: UUID;
-  name: string;
-  createdServerId: UUID;
-  locatedServerId: UUID;
-  created: Date;
-  status: PlotStatusType;
-}
-
-export interface PlotsArrayType {
-  amount: number;
-  items: PlotType[];
 }
 
 export interface ServersArrayType {
@@ -34,9 +21,15 @@ export interface ServersArrayType {
 }
 
 export interface ConfigurableServerFieldsType {
+  name?: string;
   hostname?: string;
   username?: string;
   password?: string;
+  poolKey?: string;
+  farmerKey?: string;
+}
+export interface AddServerFieldsType extends ConfigurableServerFieldsType {
+  directories?: string[];
 }
 
 export interface MsgReturnType {

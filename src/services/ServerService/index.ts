@@ -5,11 +5,13 @@ import {
   ServersArrayType,
   ServerType,
   ConfigurableServerFieldsType,
-  PlotsArrayType,
+  AddServerFieldsType,
+  DirectoryArrayType,
+  DirectoryType,
 } from "./types";
 import { axiosRequest } from "../../utils/axiosRequest";
 import { requestDecorator } from "../../utils/requestDecorator";
-import { QueuesArrayType } from "../PlotsService/types";
+import { PlotsArrayType, QueuesArrayType } from "../PlotsService/types";
 
 class ServerService {
   readonly url: string;
@@ -41,9 +43,7 @@ class ServerService {
   }
 
   @requestDecorator()
-  public async addServer(
-    fields: ConfigurableServerFieldsType
-  ): Promise<ServerType> {
+  public async addServer(fields: AddServerFieldsType): Promise<ServerType> {
     const { data }: AxiosResponse<ServerType> = await axiosRequest({
       url: this.url + "/server/",
       method: "POST",
@@ -100,6 +100,29 @@ class ServerService {
     const { data }: AxiosResponse<QueuesArrayType> = await axiosRequest({
       url: this.url + "/server/" + id + "/queues/",
       headers: { authorization: true },
+    });
+    return data;
+  }
+
+  @requestDecorator()
+  public async getServerDirectories(id: string): Promise<DirectoryArrayType> {
+    const { data }: AxiosResponse<DirectoryArrayType> = await axiosRequest({
+      url: this.url + "/server/" + id + "/directory/",
+      headers: { authorization: true },
+    });
+    return data;
+  }
+
+  @requestDecorator()
+  public async addServerDirectories(
+    id: string,
+    location: string
+  ): Promise<DirectoryType> {
+    const { data }: AxiosResponse<DirectoryType> = await axiosRequest({
+      url: this.url + "/server/" + id + "/directory/",
+      method: "POST",
+      headers: { authorization: true },
+      data: { location },
     });
     return data;
   }

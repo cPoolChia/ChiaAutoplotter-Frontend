@@ -5,7 +5,8 @@ import {
 } from "@material-ui/data-grid";
 import { NotificationManager } from "react-notifications";
 import ServerService from "../../services/ServerService";
-import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
+import { ServerType } from "../../services/ServerService/types";
+import { PlotsArrayType } from "../../services/PlotsService/types";
 import { DataGridContainer } from "../../components/EditableDataGrid/DataGridContainer";
 import { Link, useParams } from "react-router-dom";
 import { Toolbox } from "../../components/Toolbox";

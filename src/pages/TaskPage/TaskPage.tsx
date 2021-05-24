@@ -45,6 +45,7 @@ export const TaskPage: React.FC = () => {
         setLog(data);
       };
     }
+    return () => ws?.close();
   }, [ws, log]);
 
   return log ? (

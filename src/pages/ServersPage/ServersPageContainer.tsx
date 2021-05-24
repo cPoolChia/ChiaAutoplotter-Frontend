@@ -32,11 +32,26 @@ export const ServersPageContainer: React.FC = () => {
     }
   }
 
-  async function addServer(
-    fields: ConfigurableServerFieldsType
-  ): Promise<void> {
+  async function addServer(fields: { [key: string]: string }): Promise<void> {
     try {
-      const data: ServerType = await ServerService.addServer(fields);
+      const directories: string[] = [];
+      let i = 1;
+      while (fields[`directory${i}`]) {
+        directories.push(fields[`directory${i}`]);
+        i += 1;
+      }
+      const newFields = {
+        name: fields.name,
+        username: fields.username,
+        hostname: fields.hostname,
+        password: fields.password,
+        poolKey: fields.poolKey,
+        farmerKey: fields.farmerKey,
+      };
+      const data: ServerType = await ServerService.addServer({
+        ...newFields,
+        directories,
+      });
       if (servers) {
         setServers({ ...servers, items: [...servers.items, data] });
       } else {
@@ -94,7 +109,12 @@ export const ServersPageContainer: React.FC = () => {
     {
       name: "hostname",
       id: "hostname",
-      label: "Hostname",
+      label: "IP Address",
+    },
+    {
+      name: "name",
+      id: "name",
+      label: "Server Name",
     },
     {
       name: "username",
@@ -106,6 +126,22 @@ export const ServersPageContainer: React.FC = () => {
       id: "password",
       label: "Password",
     },
+    {
+      name: "poolKey",
+      id: "poolKey",
+      label: "Pool Key",
+    },
+    {
+      name: "farmerKey",
+      id: "farmerKey",
+      label: "Farmer Key",
+    },
+    {
+      name: "directory1",
+      id: "directory",
+      label: "Directory",
+      multiple: true,
+    },
   ];
 
   useEffect(() => {
@@ -114,18 +150,19 @@ export const ServersPageContainer: React.FC = () => {
 
   const columns: GridColumns = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 320,
+      field: "hostname",
+      headerName: "IP Address",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "name",
+      headerName: "Server Name",
+      width: 200,
+      editable: true,
       renderCell: (params: GridCellParams) => {
         return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
       },
-    },
-    {
-      field: "hostname",
-      headerName: "Hostname",
-      width: 150,
-      editable: true,
     },
     {
       field: "username",
@@ -136,6 +173,18 @@ export const ServersPageContainer: React.FC = () => {
     {
       field: "password",
       headerName: "Password",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "poolKey",
+      headerName: "Pool Key",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "farmerKey",
+      headerName: "Farmer Key",
       width: 200,
       editable: true,
     },

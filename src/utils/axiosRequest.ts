@@ -37,7 +37,7 @@ export const axiosRequest = ({
   if (headers && headers.authorization) {
     headers.authorization = `Bearer ${authService.getJwtTokenFromStorage()}`;
   }
-  return axios({
+  return axiosInstance({
     url,
     method,
     params,

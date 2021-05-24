@@ -2,8 +2,9 @@ import React from "react";
 import { Breadcrumbs, Container, Paper, Typography } from "@material-ui/core";
 import { GridCellParams } from "@material-ui/data-grid";
 import { Link } from "react-router-dom";
-import { DataList } from "../../components/DataList/DataList";
-import { PlotsArrayType, ServerType } from "../../services/ServerService/types";
+import { DataList } from "../../components/DataList";
+import { PlotsArrayType } from "../../services/PlotsService/types";
+import { ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 import { useStyles } from "./styles";
 
