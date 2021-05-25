@@ -21,7 +21,7 @@ export const PlotsPageContainer: React.FC = () => {
         data.tempDirName = res.items.find(
           (dir) => dir.id === data.tempDirId
         )?.location;
-        data.finalDir = res.items.find(
+        data.finalDirName = res.items.find(
           (dir) => dir.id === data.finalDirId
         )?.location;
       });
