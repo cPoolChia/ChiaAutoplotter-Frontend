@@ -18,7 +18,17 @@ import {
   QueueType,
 } from "../../services/PlotsService/types";
 import PlotsService from "../../services/PlotsService";
-import { DirectoryArrayType } from "../../services/DirectoryService/types";
+import {
+  DirectoryArrayType,
+  DirectoryType,
+} from "../../services/DirectoryService/types";
+import {
+  Button,
+  Checkbox,
+  MenuItem,
+  Select,
+  TextField,
+} from "@material-ui/core";
 
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
@@ -110,6 +120,35 @@ export const SingleServerPageContainer: React.FC = () => {
     }
   };
 
+  const CustomFieldOnChangeHandler = async (
+    id: string,
+    fieldName: string,
+    value: unknown
+  ) => {
+    try {
+      await updatePlotQueue(id, {
+        [fieldName]: value,
+      });
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  };
+
+  const restartPlottingQueueHandler = async (id: string) => {
+    try {
+      await PlotsService.restartPlotQueue(id);
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  };
+  const pausePlottingQueueHandler = async (id: string) => {
+    try {
+      await PlotsService.pausePlotQueue(id);
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  };
+
   const modalFields: FieldsType[] = [
     {
       name: "tempDirId",
@@ -170,13 +209,8 @@ export const SingleServerPageContainer: React.FC = () => {
       field: "plotTaskId",
       headerName: "Plot Task ID",
       width: 350,
-    },
-    {
-      field: "serverId",
-      headerName: "Server ID",
-      width: 320,
       renderCell: (params: GridCellParams) => {
-        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
+        return <Link to={`/tasks/${params.value}/`}>{params.value}</Link>;
       },
     },
     {
@@ -184,18 +218,90 @@ export const SingleServerPageContainer: React.FC = () => {
       headerName: "Temp Dir.",
       width: 150,
       editable: true,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <Select
+            style={{ width: "100%", height: "100%" }}
+            value={
+              directories!.items.find((dir) => dir.id === params.value)?.id
+            }
+            onChange={(
+              event: React.ChangeEvent<{ name?: string; value: unknown }>
+            ) =>
+              CustomFieldOnChangeHandler(
+                params.id.toString(),
+                params.field,
+                event.target.value
+              )
+            }
+          >
+            {directories!.items.map((dir) => (
+              <MenuItem key={dir.id} value={dir.id}>
+                {dir.location}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
     },
     {
       field: "finalDirId",
       headerName: "Final Dir.",
-      width: 150,
-      editable: true,
+      width: 200,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <Select
+            style={{ width: "100%", height: "100%" }}
+            value={
+              directories!.items.find((dir) => dir.id === params.value)?.id
+            }
+            onChange={(
+              event: React.ChangeEvent<{ name?: string; value: unknown }>
+            ) =>
+              CustomFieldOnChangeHandler(
+                params.id.toString(),
+                params.field,
+                event.target.value
+              )
+            }
+          >
+            {directories!.items.map((dir) => (
+              <MenuItem key={dir.id} value={dir.id}>
+                {dir.location}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
     },
     {
       field: "plotsAmount",
       headerName: "Plots Amount",
       width: 130,
       editable: true,
+    },
+    {
+      field: "autoplot",
+      headerName: "Autoplot",
+      width: 100,
+      renderCell: (params: GridCellParams) => {
+        const idx: number = queues!.items.findIndex(
+          (queue) => queue.id === params.id
+        );
+        const value = queues!.items[idx].autoplot;
+        return (
+          <Checkbox
+            onChange={() =>
+              CustomFieldOnChangeHandler(
+                String(params.id),
+                params.field,
+                !value
+              )
+            }
+            checked={value}
+          />
+        );
+      },
     },
     {
       field: "status",
@@ -211,12 +317,55 @@ export const SingleServerPageContainer: React.FC = () => {
         return <>{new Date(value).toLocaleString()}</>;
       },
     },
+    {
+      field: "plottingStarted",
+      headerName: "Plotting Started",
+      width: 200,
+      renderCell: (params: GridCellParams) => {
+        const value: any = params.value;
+        return <>{value ? new Date(value).toLocaleString() : ""}</>;
+      },
+    },
+    {
+      field: "plottingDuration",
+      headerName: "Plotting Duration",
+      width: 200,
+      renderCell: (params: GridCellParams) => {
+        const value: any = params.value;
+        return <>{value ? new Date(value).toLocaleTimeString() : ""}</>;
+      },
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 120,
+      renderCell: (params: GridCellParams) => {
+        return params.row.status === "failed" ? (
+          <Button
+            onClick={() => restartPlottingQueueHandler(params.id.toString())}
+            color="secondary"
+            variant="outlined"
+          >
+            RESTART
+          </Button>
+        ) : (
+          <Button
+            onClick={() => pausePlottingQueueHandler(params.id.toString())}
+            color="primary"
+            variant="outlined"
+          >
+            PAUSE
+          </Button>
+        );
+      },
+    },
   ];
 
   return serverData && queues && directories && locatedPlots !== undefined ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
       serverData={serverData}
+      directories={directories}
       QueuesDataGrid={
         <DataGridContainer
           rows={queues.items}

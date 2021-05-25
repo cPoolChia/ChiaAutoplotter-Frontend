@@ -26,6 +26,8 @@ export interface QueueType {
   serverId: UUID;
   tempDirId: UUID;
   finalDirId: UUID;
+  autoplot: boolean;
+  plottingStarted: Date;
   plotsAmount: number;
   created: Date;
   status: QueueStatusType;

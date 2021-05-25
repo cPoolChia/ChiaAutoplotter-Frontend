@@ -11,6 +11,8 @@ import FolderSharedIcon from "@material-ui/icons/FolderShared";
 import FolderSpecialIcon from "@material-ui/icons/FolderSpecial";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import LinearScaleIcon from "@material-ui/icons/LinearScale";
+import AutorenewIcon from "@material-ui/icons/Autorenew";
+import TimerIcon from "@material-ui/icons/Timer";
 
 import { Link } from "react-router-dom";
 
@@ -29,6 +31,8 @@ export const iconMap: { [key: string]: any } = {
   poolKey: <VpnKeyIcon />,
   farmerKey: <VpnKeyIcon />,
   plotsAmount: <LinearScaleIcon />,
+  autoplot: <AutorenewIcon />,
+  plottingStarted: <TimerIcon />,
 };
 
 export const dataKeyMap: { [key: string]: any } = {
@@ -47,6 +51,8 @@ export const dataKeyMap: { [key: string]: any } = {
   farmerKey: "Farmer Key",
   plotsAmount: "Plots Amount",
   name: "Name",
+  plottingStarted: "Plotting Started",
+  autoplot: "Autoplot",
 };
 
 export function valueFormatter(key: string, value: any) {
@@ -60,6 +66,6 @@ export function valueFormatter(key: string, value: any) {
     case "serverId":
       return <Link to={`/servers/${value}`}>{value}</Link>;
     default:
-      return value;
+      return String(value);
   }
 }

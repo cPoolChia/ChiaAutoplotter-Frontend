@@ -72,6 +72,26 @@ class PlotsService {
     });
     return data;
   }
+
+  @requestDecorator()
+  public async pausePlotQueue(id: string): Promise<QueueType> {
+    const { data }: AxiosResponse<QueueType> = await axiosRequest({
+      url: this.url + "/plot/queue/" + id + "/pause/",
+      method: "POST",
+      headers: { authorization: true },
+    });
+    return data;
+  }
+
+  @requestDecorator()
+  public async restartPlotQueue(id: string): Promise<QueueType> {
+    const { data }: AxiosResponse<QueueType> = await axiosRequest({
+      url: this.url + "/plot/queue/" + id + "/restart/",
+      method: "POST",
+      headers: { authorization: true },
+    });
+    return data;
+  }
 }
 
 export default new PlotsService(globalConfig);

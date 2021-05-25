@@ -7,65 +7,78 @@ import { PlotsArrayType } from "../../services/PlotsService/types";
 import { ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 import { useStyles } from "./styles";
-
-const plotsColumns = [
-  {
-    field: "id",
-    headerName: "ID",
-    width: 320,
-    renderCell: (params: GridCellParams) => {
-      return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
-    },
-  },
-  {
-    field: "name",
-    headerName: "Name",
-    width: 150,
-  },
-  {
-    field: "createdQueueId",
-    headerName: "Created Queue ID",
-    width: 320,
-    renderCell: (params: GridCellParams) => {
-      return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-    },
-  },
-  {
-    field: "locatedDirectoryId",
-    headerName: "Located Directory ID",
-    width: 320,
-    renderCell: (params: GridCellParams) => {
-      return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-    },
-  },
-  {
-    field: "created",
-    headerName: "Created",
-    width: 200,
-    renderCell: (params: GridCellParams) => {
-      const value: any = params.value;
-      return <>{new Date(value).toLocaleString()}</>;
-    },
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 120,
-  },
-];
+import { DirectoryArrayType } from "../../services/DirectoryService/types";
 
 interface Props {
   QueuesDataGrid: React.ReactChild;
   locatedPlots: PlotsArrayType;
   serverData: ServerType;
+  directories: DirectoryArrayType;
 }
 
 export const SingleServerPage: React.FC<Props> = ({
   QueuesDataGrid,
   serverData,
   locatedPlots,
+  directories,
 }) => {
   const classes = useStyles();
+
+  const plotsColumns = [
+    {
+      field: "name",
+      headerName: "Name",
+      width: 150,
+      renderCell: (params: GridCellParams) => {
+        return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
+      },
+    },
+    {
+      field: "createdQueueId",
+      headerName: "Created Queue ID",
+      width: 320,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <>
+            {
+              directories!.items.find((dir) => dir.id === params.value)
+                ?.location
+            }
+          </>
+        );
+      },
+    },
+    {
+      field: "locatedDirectoryId",
+      headerName: "Located Directory ID",
+      width: 320,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <>
+            {
+              directories!.items.find((dir) => dir.id === params.value)
+                ?.location
+            }
+          </>
+        );
+      },
+    },
+    {
+      field: "created",
+      headerName: "Created",
+      width: 200,
+      renderCell: (params: GridCellParams) => {
+        const value: any = params.value;
+        return <>{new Date(value).toLocaleString()}</>;
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 120,
+    },
+  ];
+
   return (
     <Container>
       <Breadcrumbs className={classes.breadcrumbs}>
