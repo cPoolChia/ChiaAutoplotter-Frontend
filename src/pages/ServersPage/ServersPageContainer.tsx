@@ -37,7 +37,9 @@ export const ServersPageContainer: React.FC = () => {
       const directories: string[] = [];
       let i = 1;
       while (fields[`directory${i}`]) {
-        directories.push(fields[`directory${i}`]);
+        if (fields[`directory${i}`].length) {
+          directories.push(fields[`directory${i}`]);
+        }
         i += 1;
       }
       const newFields = {
@@ -179,13 +181,13 @@ export const ServersPageContainer: React.FC = () => {
     {
       field: "poolKey",
       headerName: "Pool Key",
-      width: 200,
+      width: 320,
       editable: true,
     },
     {
       field: "farmerKey",
       headerName: "Farmer Key",
-      width: 200,
+      width: 320,
       editable: true,
     },
     {

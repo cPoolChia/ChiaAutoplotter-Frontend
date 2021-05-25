@@ -17,6 +17,7 @@ axiosInstance.interceptors.response.use(
           originalRequest._retry = true;
           axiosInstance(originalRequest);
         } catch (error) {
+          console.log(error);
           throw new Error(
             error.response.data.detail || error.response.data.message
           );

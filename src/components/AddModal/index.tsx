@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Grid,
 } from "@material-ui/core";
-import { TextField } from "mui-rff";
+import { TextField, Autocomplete } from "mui-rff";
 import { Form } from "react-final-form";
 import { FieldsType } from "./types";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -84,29 +84,43 @@ export const AddModal: React.FC<Props> = ({
                 justify="center"
                 alignItems="stretch"
               >
-                {currFields.map((field) => (
-                  <Grid key={field.name} item xs={12}>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      id={field.id}
-                      label={field.label}
-                      name={field.name}
-                      autoComplete={field.autoComplete}
-                    />
-                    {field.multiple && isFieldLastMultiple(field) ? (
-                      <Button
-                        style={{ marginTop: 15 }}
-                        color="primary"
-                        variant="contained"
-                        onClick={() => addFieldHandler(field)}
-                      >
-                        <AddCircleIcon style={{ marginRight: 8 }} />
-                        {`Add ${field.label}`}
-                      </Button>
-                    ) : null}
-                  </Grid>
-                ))}
+                {currFields.map((field) =>
+                  !field.type || field.type === "textfield" ? (
+                    <Grid key={field.name} item xs={12}>
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        id={field.id}
+                        label={field.label}
+                        name={field.name}
+                        autoComplete={field.autoComplete}
+                      />
+                      {field.multiple && isFieldLastMultiple(field) ? (
+                        <Button
+                          style={{ marginTop: 15 }}
+                          color="primary"
+                          variant="contained"
+                          onClick={() => addFieldHandler(field)}
+                        >
+                          <AddCircleIcon style={{ marginRight: 8 }} />
+                          {`Add ${field.label}`}
+                        </Button>
+                      ) : null}
+                    </Grid>
+                  ) : field.type === "autocomplete" && field.data ? (
+                    <Grid key={field.name} item xs={12}>
+                      <Autocomplete
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        required={true}
+                        options={field.data}
+                        getOptionValue={(option) => option.value}
+                        getOptionLabel={(option) => option.label}
+                      />
+                    </Grid>
+                  ) : null
+                )}
               </Grid>
               <DialogActions>
                 <Button

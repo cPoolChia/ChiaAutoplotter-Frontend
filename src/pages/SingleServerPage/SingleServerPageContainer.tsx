@@ -18,11 +18,13 @@ import {
   QueueType,
 } from "../../services/PlotsService/types";
 import PlotsService from "../../services/PlotsService";
+import { DirectoryArrayType } from "../../services/DirectoryService/types";
 
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
   const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
   const [queues, setQueues] = useState<QueuesArrayType>();
+  const [directories, setDirectories] = useState<DirectoryArrayType>();
 
   const { id }: any = useParams();
 
@@ -48,6 +50,16 @@ export const SingleServerPageContainer: React.FC = () => {
     try {
       const data = await ServerService.getQueues(id);
       setQueues(data);
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  }, [id]);
+
+  const getServerDirectories = useCallback(async (): Promise<void> => {
+    try {
+      const data = await ServerService.getServerDirectories(id);
+      setDirectories(data);
+      console.log(data);
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -103,11 +115,25 @@ export const SingleServerPageContainer: React.FC = () => {
       name: "tempDirId",
       id: "tempDirId",
       label: "Temporary Dir. Id",
+      type: "autocomplete",
+      data: directories?.items.map((directory) => {
+        return {
+          label: directory.location,
+          value: directory.id,
+        };
+      }),
     },
     {
       name: "finalDirId",
       id: "finalDirId",
       label: "Final Dir. Id",
+      type: "autocomplete",
+      data: directories?.items.map((directory) => {
+        return {
+          label: directory.location,
+          value: directory.id,
+        };
+      }),
     },
     {
       name: "plotsAmount",
@@ -117,8 +143,14 @@ export const SingleServerPageContainer: React.FC = () => {
   ];
 
   const initialRequests = useCallback(
-    () => Promise.all([getServerData(), getLocatedPlots(), getQueueData()]),
-    [getServerData, getLocatedPlots, getQueueData]
+    () =>
+      Promise.all([
+        getServerData(),
+        getLocatedPlots(),
+        getQueueData(),
+        getServerDirectories(),
+      ]),
+    [getServerData, getLocatedPlots, getQueueData, getServerDirectories]
   );
 
   useEffect(() => {
@@ -181,7 +213,7 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
-  return serverData && queues && locatedPlots !== undefined ? (
+  return serverData && queues && directories && locatedPlots !== undefined ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
       serverData={serverData}
