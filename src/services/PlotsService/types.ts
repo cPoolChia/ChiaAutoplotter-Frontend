@@ -15,12 +15,9 @@ export interface PlotsArrayType {
 }
 
 export interface ConfigurableQueueFieldsType {
-  createDir?: string;
-  plotDir?: string;
-  poolKey?: string;
-  farmerKey?: string;
   plotsAmount?: number;
-  serverId?: string;
+  tempDirId?: UUID;
+  finalDirId?: UUID;
 }
 
 export interface QueueType {
@@ -37,7 +34,6 @@ export interface QueueType {
 export interface PlotType {
   id: UUID;
   name: string;
-  location: string;
   createdQueueId: UUID;
   locatedDirectoryId: UUID;
   created: Date;

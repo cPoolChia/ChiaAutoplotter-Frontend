@@ -100,24 +100,14 @@ export const SingleServerPageContainer: React.FC = () => {
 
   const modalFields: FieldsType[] = [
     {
-      name: "createDir",
-      id: "createDir",
-      label: "Create Dir.",
+      name: "tempDirId",
+      id: "tempDirId",
+      label: "Temporary Dir. Id",
     },
     {
-      name: "plotDir",
-      id: "plotDir",
-      label: "Plot Dir.",
-    },
-    {
-      name: "poolKey",
-      id: "poolKey",
-      label: "Pool key",
-    },
-    {
-      name: "farmerKey",
-      id: "farmerKey",
-      label: "Farmer key",
+      name: "finalDirId",
+      id: "finalDirId",
+      label: "Final Dir. Id",
     },
     {
       name: "plotsAmount",
@@ -149,36 +139,24 @@ export const SingleServerPageContainer: React.FC = () => {
       headerName: "Plot Task ID",
       width: 350,
     },
-    // {
-    //   field: "serverId",
-    //   headerName: "Server ID",
-    //   width: 320,
-    //   renderCell: (params: GridCellParams) => {
-    //     return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
-    //   },
-    // },
     {
-      field: "createDir",
-      headerName: "Create Dir.",
+      field: "serverId",
+      headerName: "Server ID",
+      width: 320,
+      renderCell: (params: GridCellParams) => {
+        return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
+      },
+    },
+    {
+      field: "tempDirId",
+      headerName: "Temp Dir.",
       width: 150,
       editable: true,
     },
     {
-      field: "plotDir",
-      headerName: "Plot Dir.",
+      field: "finalDirId",
+      headerName: "Final Dir.",
       width: 150,
-      editable: true,
-    },
-    {
-      field: "poolKey",
-      headerName: "Pool Key",
-      width: 320,
-      editable: true,
-    },
-    {
-      field: "farmerKey",
-      headerName: "Farmer Key",
-      width: 320,
       editable: true,
     },
     {
@@ -186,6 +164,11 @@ export const SingleServerPageContainer: React.FC = () => {
       headerName: "Plots Amount",
       width: 130,
       editable: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 130,
     },
     {
       field: "created",

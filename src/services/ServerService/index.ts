@@ -6,9 +6,8 @@ import {
   ServerType,
   ConfigurableServerFieldsType,
   AddServerFieldsType,
-  DirectoryArrayType,
-  DirectoryType,
 } from "./types";
+import { DirectoryArrayType, DirectoryType } from "../DirectoryService/types";
 import { axiosRequest } from "../../utils/axiosRequest";
 import { requestDecorator } from "../../utils/requestDecorator";
 import { PlotsArrayType, QueuesArrayType } from "../PlotsService/types";

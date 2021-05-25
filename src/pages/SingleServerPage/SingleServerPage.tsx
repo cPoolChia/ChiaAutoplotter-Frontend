@@ -23,16 +23,16 @@ const plotsColumns = [
     width: 150,
   },
   {
-    field: "createdServerId",
-    headerName: "Created Server ID",
+    field: "createdQueueId",
+    headerName: "Created Queue ID",
     width: 320,
     renderCell: (params: GridCellParams) => {
       return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
     },
   },
   {
-    field: "locatedServerId",
-    headerName: "Located Server ID",
+    field: "locatedDirectoryId",
+    headerName: "Located Directory ID",
     width: 320,
     renderCell: (params: GridCellParams) => {
       return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
@@ -77,7 +77,7 @@ export const SingleServerPage: React.FC<Props> = ({
       <DataList title="Server Data" data={serverData} />
       <Paper className={classes.paper}>
         <DataGridComponent
-          title="Located Plots"
+          title="Plots"
           style={{ width: "100%", height: 500 }}
           rows={locatedPlots.items}
           columns={plotsColumns}
