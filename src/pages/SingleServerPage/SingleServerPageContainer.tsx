@@ -217,7 +217,6 @@ export const SingleServerPageContainer: React.FC = () => {
       field: "tempDirId",
       headerName: "Temp Dir.",
       width: 150,
-      editable: true,
       renderCell: (params: GridCellParams) => {
         return (
           <Select
@@ -340,7 +339,8 @@ export const SingleServerPageContainer: React.FC = () => {
       headerName: "Action",
       width: 120,
       renderCell: (params: GridCellParams) => {
-        return params.row.status === "failed" ? (
+        return params.row.status === "failed" ||
+          params.row.status === "paused" ? (
           <Button
             onClick={() => restartPlottingQueueHandler(params.id.toString())}
             color="secondary"
