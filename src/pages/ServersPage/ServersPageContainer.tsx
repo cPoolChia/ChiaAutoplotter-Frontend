@@ -194,6 +194,9 @@ export const ServersPageContainer: React.FC = () => {
       field: "initTaskId",
       headerName: "Task ID",
       width: 330,
+      renderCell: (params: GridCellParams) => {
+        return <Link to={`/tasks/${params.value}/`}>{params.value}</Link>;
+      },
     },
     {
       field: "created",

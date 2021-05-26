@@ -29,7 +29,7 @@ const queueColumns = [
     headerName: "Server ID",
     width: 320,
     renderCell: (params: GridCellParams) => {
-      return <Link to={`/servers/${params.id}/`}>{params.value}</Link>;
+      return <Link to={`/servers/${params.value}/`}>{params.value}</Link>;
     },
   },
   {
