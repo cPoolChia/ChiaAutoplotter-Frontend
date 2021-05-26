@@ -9,7 +9,7 @@ interface Props {
   columns: GridColumns;
   total: number;
   title: string;
-  editHandler: any;
+  editHandler?: any;
   Toolbox?: React.ReactChild;
   style?: Object;
 }

@@ -22,13 +22,8 @@ import {
   DirectoryArrayType,
   DirectoryType,
 } from "../../services/DirectoryService/types";
-import {
-  Button,
-  Checkbox,
-  MenuItem,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Button, Checkbox, MenuItem, Select } from "@material-ui/core";
+import DirectoryService from "../../services/DirectoryService";
 
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
@@ -90,6 +85,22 @@ export const SingleServerPageContainer: React.FC = () => {
     }
   }
 
+  async function addDirectory(fields: any): Promise<void> {
+    try {
+      const data: DirectoryType = await ServerService.addServerDirectory(
+        id,
+        fields.location
+      );
+      if (directories) {
+        setDirectories({ ...directories, items: [...directories.items, data] });
+      } else {
+        setDirectories({ amount: 1, items: [data] });
+      }
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  }
+
   async function updatePlotQueue(
     id: string,
     fields: ConfigurableQueueFieldsType
@@ -110,7 +121,7 @@ export const SingleServerPageContainer: React.FC = () => {
     }
   }
 
-  const editCellHandler = async (params: GridEditCellPropsParams) => {
+  const editPlotCellHandler = async (params: GridEditCellPropsParams) => {
     try {
       await updatePlotQueue(params.id.toString(), {
         [params.field]: params.props.value,
@@ -149,7 +160,7 @@ export const SingleServerPageContainer: React.FC = () => {
     }
   };
 
-  const modalFields: FieldsType[] = [
+  const plotsModalFields: FieldsType[] = [
     {
       name: "tempDirId",
       id: "tempDirId",
@@ -181,6 +192,14 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
+  const DirectoriesModalFields: FieldsType[] = [
+    {
+      name: "location",
+      id: "location",
+      label: "Location",
+    },
+  ];
+
   const initialRequests = useCallback(
     () =>
       Promise.all([
@@ -196,7 +215,7 @@ export const SingleServerPageContainer: React.FC = () => {
     initialRequests();
   }, [initialRequests]);
 
-  const columns = [
+  const plotsGridColumns = [
     {
       field: "id",
       headerName: "ID",
@@ -361,6 +380,40 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
+  const directoriesGridColumns = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 320,
+      renderCell: (params: GridCellParams) => {
+        return <Link to={`/directories/${params.id}/`}>{params.value}</Link>;
+      },
+    },
+    {
+      field: "location",
+      headerName: "Location / Path",
+      width: 300,
+    },
+    {
+      field: "status",
+      headerName: "status",
+      width: 200,
+    },
+    {
+      field: "diskSize",
+      headerName: "Disk Size",
+      width: 200,
+    },
+    {
+      field: "freeDiskSpace",
+      headerName: "Free Disk Space",
+      width: 220,
+      renderCell: (params: GridCellParams) => {
+        return <>{params.row.diskSize - params.row.diskTaken}</>;
+      },
+    },
+  ];
+
   return serverData && queues && directories && locatedPlots !== undefined ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
@@ -369,15 +422,30 @@ export const SingleServerPageContainer: React.FC = () => {
       QueuesDataGrid={
         <DataGridContainer
           rows={queues.items}
-          columns={columns}
+          columns={plotsGridColumns}
           total={queues.amount}
           title="Plot Queues List"
-          editHandler={editCellHandler}
+          editHandler={editPlotCellHandler}
           Toolbox={
             <Toolbox
               title="Add Queue"
               submitHandler={addPlotQueue}
-              modalFields={modalFields}
+              modalFields={plotsModalFields}
+            />
+          }
+        />
+      }
+      DirectoriesDataGrid={
+        <DataGridContainer
+          rows={directories.items}
+          columns={directoriesGridColumns}
+          total={directories.amount}
+          title="Directories List"
+          Toolbox={
+            <Toolbox
+              title="Add Directory"
+              submitHandler={addDirectory}
+              modalFields={DirectoriesModalFields}
             />
           }
         />

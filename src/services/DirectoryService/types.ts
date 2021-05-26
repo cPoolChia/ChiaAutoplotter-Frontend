@@ -5,11 +5,11 @@ type DirectoryStatusType = "pending" | "failed" | "approved";
 export interface DirectoryType {
   id: UUID;
   location: string;
-  serverId: string;
+  serverId: UUID;
   created: Date;
   status: DirectoryStatusType;
-  diskSize: 0;
-  diskTaken: 0;
+  diskSize: number;
+  diskTaken: number;
 }
 
 export interface DirectoryArrayType {

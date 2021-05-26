@@ -10,7 +10,7 @@ import { useStyles } from "./styles";
 interface Props {
   rows: GridRowData[];
   columns: GridColumns;
-  editHandler: (params: GridEditCellPropsParams) => void;
+  editHandler?: (params: GridEditCellPropsParams) => void;
 }
 
 export const DataGridComponent: React.FC<Props> = ({

@@ -11,6 +11,7 @@ import { DirectoryArrayType } from "../../services/DirectoryService/types";
 
 interface Props {
   QueuesDataGrid: React.ReactChild;
+  DirectoriesDataGrid: React.ReactChild;
   locatedPlots: PlotsArrayType;
   serverData: ServerType;
   directories: DirectoryArrayType;
@@ -18,6 +19,7 @@ interface Props {
 
 export const SingleServerPage: React.FC<Props> = ({
   QueuesDataGrid,
+  DirectoriesDataGrid,
   serverData,
   locatedPlots,
   directories,
@@ -98,6 +100,7 @@ export const SingleServerPage: React.FC<Props> = ({
         />
       </Paper>
       {QueuesDataGrid}
+      {DirectoriesDataGrid}
     </Container>
   );
 };

@@ -113,7 +113,7 @@ class ServerService {
   }
 
   @requestDecorator()
-  public async addServerDirectories(
+  public async addServerDirectory(
     id: string,
     location: string
   ): Promise<DirectoryType> {
