@@ -23,8 +23,10 @@ axiosInstance.interceptors.response.use(
           );
         }
       }
-    }
-    throw new Error(error.response.data.detail || error.response.data.message);
+    } else
+      throw new Error(
+        error.response.data.detail || error.response.data.message
+      );
   }
 );
 

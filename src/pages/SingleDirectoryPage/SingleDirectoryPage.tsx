@@ -69,9 +69,9 @@ const queueColumns = [
 ];
 const plotsColumns = [
   {
-    field: "name",
-    headerName: "Name",
-    width: 150,
+    field: "id",
+    headerName: "ID",
+    width: 320,
     renderCell: (params: GridCellParams) => {
       return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
     },
