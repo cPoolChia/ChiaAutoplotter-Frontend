@@ -33,7 +33,7 @@ export const LoginFormContainer: React.FC = () => {
     const { email, password, rememberMe } = e as any;
     console.log(rememberMe);
     try {
-      await AuthService.login(email, password, rememberMe);
+      await AuthService.login(email.trim(), password, rememberMe);
       history.push("/servers");
     } catch (error) {
       NotificationManager.error(error.message);
