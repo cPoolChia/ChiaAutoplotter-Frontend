@@ -36,21 +36,6 @@ export const SingleServerPage: React.FC<Props> = ({
       },
     },
     {
-      field: "createdQueueId",
-      headerName: "Created Queue ID",
-      width: 320,
-      renderCell: (params: GridCellParams) => {
-        return (
-          <>
-            {
-              directories!.items.find((dir) => dir.id === params.value)
-                ?.location
-            }
-          </>
-        );
-      },
-    },
-    {
       field: "locatedDirectoryId",
       headerName: "Located Directory ID",
       width: 320,

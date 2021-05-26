@@ -13,8 +13,11 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import LinearScaleIcon from "@material-ui/icons/LinearScale";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
 import TimerIcon from "@material-ui/icons/Timer";
+import FolderIcon from "@material-ui/icons/Folder";
+import SaveIcon from "@material-ui/icons/Save";
 
 import { Link } from "react-router-dom";
+import { DirectoryType } from "../services/DirectoryService/types";
 
 export const iconMap: { [key: string]: any } = {
   id: <FingerprintIcon />,
@@ -33,6 +36,10 @@ export const iconMap: { [key: string]: any } = {
   plotsAmount: <LinearScaleIcon />,
   autoplot: <AutorenewIcon />,
   plottingStarted: <TimerIcon />,
+  tempDirId: <FolderIcon />,
+  finalDirId: <FolderIcon />,
+  diskSize: <SaveIcon />,
+  diskTaken: <SaveIcon />,
 };
 
 export const dataKeyMap: { [key: string]: any } = {
@@ -53,6 +60,11 @@ export const dataKeyMap: { [key: string]: any } = {
   name: "Name",
   plottingStarted: "Plotting Started",
   autoplot: "Autoplot",
+  tempDirId: "Temporary Dir.",
+  finalDirId: "Final Dir.",
+  location: "Location",
+  diskSize: "Disk Size",
+  diskTaken: "Taken Disk Size",
 };
 
 export function valueFormatter(key: string, value: any) {
@@ -68,4 +80,11 @@ export function valueFormatter(key: string, value: any) {
     default:
       return String(value);
   }
+}
+
+export function getDirectoryLocationById(
+  directories: DirectoryType[],
+  id: string
+) {
+  return directories.find((dir) => dir.id === id)?.location;
 }

@@ -1,11 +1,14 @@
 import React from "react";
-import { Breadcrumbs, Container, Paper, Typography } from "@material-ui/core";
+import { Container, Paper } from "@material-ui/core";
 import { GridCellParams } from "@material-ui/data-grid";
 import { Link } from "react-router-dom";
 import { DataList } from "../../components/DataList";
-import { PlotsArrayType } from "../../services/PlotsService/types";
+import {
+  PlotsArrayType,
+  QueuesArrayType,
+} from "../../services/PlotsService/types";
 import { DataGridComponent } from "../../components/DataGrid";
-import { QueueType } from "../../services/PlotsService/types";
+import { DirectoryType } from "../../services/DirectoryService/types";
 
 const queueColumns = [
   {
@@ -64,31 +67,65 @@ const queueColumns = [
     },
   },
 ];
+const plotsColumns = [
+  {
+    field: "name",
+    headerName: "Name",
+    width: 150,
+    renderCell: (params: GridCellParams) => {
+      return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
+    },
+  },
+  {
+    field: "created",
+    headerName: "Created",
+    width: 200,
+    renderCell: (params: GridCellParams) => {
+      const value: any = params.value;
+      return <>{new Date(value).toLocaleString()}</>;
+    },
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+  },
+];
 
 interface Props {
-  queueData: QueueType;
+  queuesData: QueuesArrayType;
   plotsData: PlotsArrayType;
+  directoryData: DirectoryType;
 }
 
-export const SinglePlotPage: React.FC<Props> = ({ queueData, plotsData }) => {
+export const SingleDirectoryPage: React.FC<Props> = ({
+  queuesData,
+  plotsData,
+  directoryData,
+}) => {
   return (
     <Container>
-      <Breadcrumbs style={{ marginTop: 10, marginBottom: 20 }}>
-        <Link style={{ color: "black", textDecoration: "none" }} to="/plots">
-          Plots
-        </Link>
-        <Typography>{queueData.id}</Typography>
-      </Breadcrumbs>
-      <DataList title="Queue Data" data={queueData} />
+      <DataList title="Directory Data" data={directoryData} />
       <Paper
         style={{ marginTop: 50, marginBottom: 50, padding: 20, height: 600 }}
       >
         <DataGridComponent
-          title="Created Plots"
+          title="Directory Plots"
           style={{ width: "100%", height: 500 }}
           rows={plotsData.items}
           columns={queueColumns}
           total={plotsData.amount}
+        />
+      </Paper>
+      <Paper
+        style={{ marginTop: 50, marginBottom: 50, padding: 20, height: 600 }}
+      >
+        <DataGridComponent
+          title="Directory Queues"
+          style={{ width: "100%", height: 500 }}
+          rows={queuesData.items}
+          columns={plotsColumns}
+          total={queuesData.amount}
         />
       </Paper>
     </Container>

@@ -7,6 +7,7 @@ import { ServersPageContainer as ServersPage } from "./pages/ServersPage/Servers
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SingleServerPageContainer as SingleServerPage } from "./pages/SingleServerPage/SingleServerPageContainer";
 import { SinglePlotPageContainer as SinglePlotPage } from "./pages/SinglePlotPage/SinglePlotPageContainer";
+import { SingleDirectoryPageContainer as SingleDirectoryPage } from "./pages/SingleDirectoryPage/SingleDirectoryPageContainer";
 import { NotificationContainer } from "react-notifications";
 import { PlotsPageContainer as PlotsPage } from "./pages/PlotsPage/PlotsPageContainer";
 import "react-notifications/lib/notifications.css";
@@ -35,6 +36,11 @@ function App() {
           <PrivateRoute path="/tasks/:id">
             <DefaultLayout>
               <TaskPage />
+            </DefaultLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/directories/:id">
+            <DefaultLayout>
+              <SingleDirectoryPage />
             </DefaultLayout>
           </PrivateRoute>
           <PrivateRoute path="/plots">
