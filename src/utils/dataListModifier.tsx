@@ -15,9 +15,11 @@ import AutorenewIcon from "@material-ui/icons/Autorenew";
 import TimerIcon from "@material-ui/icons/Timer";
 import FolderIcon from "@material-ui/icons/Folder";
 import SaveIcon from "@material-ui/icons/Save";
+import CheckIcon from "@material-ui/icons/Check";
 
 import { Link } from "react-router-dom";
 import { DirectoryType } from "../services/DirectoryService/types";
+import { Button } from "@material-ui/core";
 
 export const iconMap: { [key: string]: any } = {
   id: <FingerprintIcon />,
@@ -67,7 +69,7 @@ export const dataKeyMap: { [key: string]: any } = {
   diskTaken: "Taken Disk Size",
 };
 
-export function valueFormatter(key: string, value: any) {
+export function valueFormatter(key: string, value: any): string | JSX.Element {
   switch (key) {
     case "created":
       return new Date(value).toLocaleString();
@@ -77,6 +79,36 @@ export function valueFormatter(key: string, value: any) {
       return <Link to={`/tasks/${value}`}>{value}</Link>;
     case "serverId":
       return <Link to={`/servers/${value}`}>{value}</Link>;
+    case "poolKey":
+      return (
+        <>
+          {value.slice(0, 8) + "..." + value.slice(-6)}
+          <Button
+            size="small"
+            style={{ marginLeft: 5, width: 50 }}
+            onClick={() => {
+              navigator.clipboard.writeText(value);
+            }}
+          >
+            <FileCopyIcon style={{ color: "#36AD58", fontSize: 16 }} />
+          </Button>
+        </>
+      );
+    case "farmerKey":
+      return (
+        <>
+          {value.slice(0, 8) + "..." + value.slice(-6)}
+          <Button
+            size="small"
+            style={{ marginLeft: 5, width: 50 }}
+            onClick={() => {
+              navigator.clipboard.writeText(value);
+            }}
+          >
+            <FileCopyIcon style={{ color: "#36AD58", fontSize: 16 }} />
+          </Button>
+        </>
+      );
     default:
       return String(value);
   }
