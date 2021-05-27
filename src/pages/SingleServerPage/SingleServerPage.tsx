@@ -37,9 +37,12 @@ export const SingleServerPage: React.FC<Props> = ({
     },
     {
       field: "locatedDirectoryId",
-      headerName: "Located Directory ID",
-      width: 320,
+      headerName: "Located Directory",
+      width: 300,
       renderCell: (params: GridCellParams) => {
+        const path = directories!.items.find(
+          (dir) => dir.id === params.value
+        )?.location;
         return (
           <>
             {

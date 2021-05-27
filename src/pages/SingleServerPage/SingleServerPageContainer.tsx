@@ -219,23 +219,35 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 320,
+      width: 180,
       renderCell: (params: GridCellParams) => {
-        return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
+        return (
+          <Link to={`/plots/${params.id}/`}>
+            {params.value!.toString().slice(0, 6) +
+              "..." +
+              params.value!.toString().slice(-6)}
+          </Link>
+        );
       },
     },
     {
       field: "plotTaskId",
       headerName: "Plot Task ID",
-      width: 350,
+      width: 180,
       renderCell: (params: GridCellParams) => {
-        return <Link to={`/tasks/${params.value}/`}>{params.value}</Link>;
+        return (
+          <Link to={`/tasks/${params.value}/`}>
+            {params.value!.toString().slice(0, 6) +
+              "..." +
+              params.value!.toString().slice(-6)}
+          </Link>
+        );
       },
     },
     {
       field: "tempDirId",
       headerName: "Temp Dir.",
-      width: 150,
+      width: 280,
       renderCell: (params: GridCellParams) => {
         return (
           <Select
@@ -265,7 +277,7 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "finalDirId",
       headerName: "Final Dir.",
-      width: 200,
+      width: 280,
       renderCell: (params: GridCellParams) => {
         return (
           <Select
@@ -384,9 +396,15 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 320,
+      width: 180,
       renderCell: (params: GridCellParams) => {
-        return <Link to={`/directories/${params.id}/`}>{params.value}</Link>;
+        return (
+          <Link to={`/directories/${params.id}/`}>
+            {params.value!.toString().slice(0, 6) +
+              "..." +
+              params.value!.toString().slice(-6)}
+          </Link>
+        );
       },
     },
     {
