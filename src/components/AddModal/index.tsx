@@ -53,6 +53,18 @@ export const AddModal: React.FC<Props> = ({
     return currFields[length - 1] === field ? true : false;
   };
 
+  const validate = (values: any) => {
+    const errors: any = {};
+    console.log(values);
+    const valuesKey = Object.keys(values);
+    fields.forEach((field) => {
+      if (valuesKey.indexOf(field.name) === -1) {
+        errors[field.name] = "Field is required";
+      }
+    });
+    return errors;
+  };
+
   useEffect(() => {
     if (open) {
       window.addEventListener("keypress", enterKeyListener);
@@ -74,6 +86,7 @@ export const AddModal: React.FC<Props> = ({
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <Form
+          validate={validate}
           onSubmit={submitHandler}
           render={({ handleSubmit }) => (
             <form>
