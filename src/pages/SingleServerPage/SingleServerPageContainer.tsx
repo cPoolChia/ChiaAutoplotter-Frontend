@@ -447,14 +447,21 @@ export const SingleServerPageContainer: React.FC = () => {
           ).toFixed(2)
         );
         return params.value ? (
-          <div style={{ width: 200 }}>
+          <div style={{ width: 200, position: "relative" }}>
             <LinearProgress
               variant="buffer"
               style={{ height: 25, marginTop: 25, marginBottom: 25 }}
               valueBuffer={100}
               value={value}
             />
-            <span style={{ position: "absolute", top: 0, marginLeft: "7.5%" }}>
+            <span
+              style={{
+                position: "absolute",
+                top: 12,
+                left: "42.5%",
+                zIndex: 1,
+              }}
+            >
               {value}%
             </span>
           </div>
