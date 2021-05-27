@@ -421,13 +421,31 @@ export const SingleServerPageContainer: React.FC = () => {
       field: "diskSize",
       headerName: "Disk Size",
       width: 200,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <>
+            {params.value
+              ? (Number(params.value) * 100_000).toString() + "MB"
+              : null}
+          </>
+        );
+      },
     },
     {
       field: "freeDiskSpace",
       headerName: "Free Disk Space",
       width: 220,
       renderCell: (params: GridCellParams) => {
-        return <>{params.row.diskSize - params.row.diskTaken}</>;
+        return (
+          <>
+            {params.value
+              ? (
+                  (params.row.diskSize - params.row.diskTaken) *
+                  100_000
+                ).toString() + "MB"
+              : null}
+          </>
+        );
       },
     },
   ];
