@@ -12,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import { Toolbox } from "../../components/Toolbox";
 import { FieldsType } from "../../components/AddModal/types";
 import { SingleServerPage } from "./SingleServerPage";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import {
   ConfigurableQueueFieldsType,
   QueuesArrayType,
@@ -22,8 +23,12 @@ import {
   DirectoryArrayType,
   DirectoryType,
 } from "../../services/DirectoryService/types";
-import { Button, Checkbox, MenuItem, Select } from "@material-ui/core";
+import { Button, Checkbox, Divider, MenuItem, Select } from "@material-ui/core";
 import DirectoryService from "../../services/DirectoryService";
+import {
+  formatDiskSize,
+  getTakenDiskSizePercentage,
+} from "../../utils/diskSizeFormatter";
 
 export const SingleServerPageContainer: React.FC = () => {
   const [serverData, setServerData] = useState<ServerType>();
@@ -152,6 +157,7 @@ export const SingleServerPageContainer: React.FC = () => {
       NotificationManager.error(error.message);
     }
   };
+
   const pausePlottingQueueHandler = async (id: string) => {
     try {
       await PlotsService.pausePlotQueue(id);
@@ -424,27 +430,36 @@ export const SingleServerPageContainer: React.FC = () => {
       renderCell: (params: GridCellParams) => {
         return (
           <>
-            {params.value
-              ? (Number(params.value) / 1024 ** 2).toString() + "MB"
-              : null}
+            {params.value ? formatDiskSize(Number(params.value), "GB") : null}
           </>
         );
       },
     },
     {
-      field: "freeDiskSpace",
-      headerName: "Free Disk Space",
+      field: "diskTaken",
+      headerName: "Taken Disk Space",
       width: 220,
       renderCell: (params: GridCellParams) => {
-        return (
-          <>
-            {params.value
-              ? (
-                  (params.row.diskSize - params.row.diskTaken) /
-                  1024 ** 2
-                ).toString() + "MB"
-              : null}
-          </>
+        const value = Number(
+          getTakenDiskSizePercentage(
+            params.row.diskSize,
+            params.row.diskTaken
+          ).toFixed(2)
+        );
+        return params.value ? (
+          <div style={{ width: 200 }}>
+            <LinearProgress
+              variant="buffer"
+              style={{ height: 25, marginTop: 25, marginBottom: 25 }}
+              valueBuffer={100}
+              value={value}
+            />
+            <span style={{ position: "absolute", top: 0, marginLeft: "7.5%" }}>
+              {value}%
+            </span>
+          </div>
+        ) : (
+          <></>
         );
       },
     },
