@@ -425,7 +425,7 @@ export const SingleServerPageContainer: React.FC = () => {
         return (
           <>
             {params.value
-              ? (Number(params.value) * 100_000).toString() + "MB"
+              ? (Number(params.value) / 1024 ** 2).toString() + "MB"
               : null}
           </>
         );
@@ -440,8 +440,8 @@ export const SingleServerPageContainer: React.FC = () => {
           <>
             {params.value
               ? (
-                  (params.row.diskSize - params.row.diskTaken) *
-                  100_000
+                  (params.row.diskSize - params.row.diskTaken) /
+                  1024 ** 2
                 ).toString() + "MB"
               : null}
           </>
