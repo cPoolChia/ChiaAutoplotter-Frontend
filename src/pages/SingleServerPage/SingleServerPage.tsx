@@ -30,7 +30,7 @@ export const SingleServerPage: React.FC<Props> = ({
     {
       field: "name",
       headerName: "Name",
-      width: 150,
+      width: 300,
       renderCell: (params: GridCellParams) => {
         return <Link to={`/plots/${params.id}/`}>{params.value}</Link>;
       },
@@ -38,11 +38,8 @@ export const SingleServerPage: React.FC<Props> = ({
     {
       field: "locatedDirectoryId",
       headerName: "Located Directory",
-      width: 300,
+      width: 250,
       renderCell: (params: GridCellParams) => {
-        const path = directories!.items.find(
-          (dir) => dir.id === params.value
-        )?.location;
         return (
           <>
             {
