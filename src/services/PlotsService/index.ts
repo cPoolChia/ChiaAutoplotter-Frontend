@@ -22,7 +22,6 @@ class PlotsService {
       url: this.url + "/plot/queue/",
       headers: { authorization: true },
     });
-    console.log(data);
     return data;
   }
 

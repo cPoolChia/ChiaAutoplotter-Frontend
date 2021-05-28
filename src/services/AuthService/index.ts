@@ -41,7 +41,9 @@ class AuthService {
   public async login(
     input: string,
     password: string,
-    shouldBeStoredInLocalStorage: boolean
+    shouldBeStoredInLocalStorage: boolean = this.storage === "localStorage"
+      ? true
+      : false
   ): Promise<string | Error> {
     if (shouldBeStoredInLocalStorage) {
       this.setStorage("localStorage");
@@ -87,7 +89,7 @@ class AuthService {
   // }
 
   @requestDecorator()
-  public async updateJwtToken(): Promise<void> {
+  public async updateJwtToken(): Promise<GetJwtTokenType> {
     const { data }: AxiosResponse<GetJwtTokenType> = await axiosRequest({
       url: this.url + "/login/access-token",
       method: "PUT",
@@ -95,9 +97,9 @@ class AuthService {
     });
 
     this.setJwtTokenToStorage(data.access_token);
+    return data;
   }
 
-  @requestDecorator()
   public async logout(): Promise<void> {
     sessionStorage.clear();
     localStorage.clear();

@@ -41,7 +41,6 @@ export const TaskPage: React.FC = () => {
     if (ws) {
       ws.onmessage = (event: MessageEvent<any>) => {
         const data = JSON.parse(event.data);
-        console.log(data);
         setLog(data);
       };
     }

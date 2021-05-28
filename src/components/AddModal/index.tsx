@@ -33,7 +33,6 @@ export const AddModal: React.FC<Props> = ({
 
   const enterKeyListener = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
-      console.log("enter pressed");
       btnRef?.current?.click();
     }
   };
@@ -55,7 +54,6 @@ export const AddModal: React.FC<Props> = ({
 
   const validate = (values: any) => {
     const errors: any = {};
-    console.log(values);
     const valuesKey = Object.keys(values);
     fields.forEach((field) => {
       if (valuesKey.indexOf(field.name) === -1) {

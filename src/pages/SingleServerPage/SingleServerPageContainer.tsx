@@ -69,7 +69,6 @@ export const SingleServerPageContainer: React.FC = () => {
     try {
       const data = await ServerService.getServerDirectories(id);
       setDirectories(data);
-      console.log(data);
     } catch (error) {
       NotificationManager.error(error.message);
     }
