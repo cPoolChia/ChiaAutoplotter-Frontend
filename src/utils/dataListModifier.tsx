@@ -15,6 +15,7 @@ import AutorenewIcon from "@material-ui/icons/Autorenew";
 import TimerIcon from "@material-ui/icons/Timer";
 import FolderIcon from "@material-ui/icons/Folder";
 import SaveIcon from "@material-ui/icons/Save";
+import PowerIcon from "@material-ui/icons/Power";
 
 import { Link } from "react-router-dom";
 import { DirectoryType } from "../services/DirectoryService/types";
@@ -41,6 +42,7 @@ export const iconMap: { [key: string]: any } = {
   finalDirId: <FolderIcon />,
   diskSize: <SaveIcon />,
   diskTaken: <SaveIcon />,
+  workerPort: <PowerIcon />,
 };
 
 export const dataKeyMap: { [key: string]: any } = {
@@ -66,6 +68,7 @@ export const dataKeyMap: { [key: string]: any } = {
   location: "Location",
   diskSize: "Disk Size",
   diskTaken: "Taken Disk Size",
+  workerPort: "Worker Port",
 };
 
 export function valueFormatter(key: string, value: any): string | JSX.Element {
