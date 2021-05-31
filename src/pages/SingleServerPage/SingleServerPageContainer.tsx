@@ -148,21 +148,21 @@ export const SingleServerPageContainer: React.FC = () => {
     }
   };
 
-  const restartPlottingQueueHandler = async (id: string) => {
-    try {
-      await PlotsService.restartPlotQueue(id);
-    } catch (error) {
-      NotificationManager.error(error.message);
-    }
-  };
+  // const restartPlottingQueueHandler = async (id: string) => {
+  //   try {
+  //     await PlotsService.restartPlotQueue(id);
+  //   } catch (error) {
+  //     NotificationManager.error(error.message);
+  //   }
+  // };
 
-  const pausePlottingQueueHandler = async (id: string) => {
-    try {
-      await PlotsService.pausePlotQueue(id);
-    } catch (error) {
-      NotificationManager.error(error.message);
-    }
-  };
+  // const pausePlottingQueueHandler = async (id: string) => {
+  //   try {
+  //     await PlotsService.pausePlotQueue(id);
+  //   } catch (error) {
+  //     NotificationManager.error(error.message);
+  //   }
+  // };
 
   const plotsModalFields: FieldsType[] = [
     {
@@ -355,31 +355,31 @@ export const SingleServerPageContainer: React.FC = () => {
         return <>{value ? new Date(value).toLocaleTimeString() : ""}</>;
       },
     },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 120,
-      renderCell: (params: GridCellParams) => {
-        return params.row.status === "failed" ||
-          params.row.status === "paused" ? (
-          <Button
-            onClick={() => restartPlottingQueueHandler(params.id.toString())}
-            color="secondary"
-            variant="outlined"
-          >
-            RESTART
-          </Button>
-        ) : (
-          <Button
-            onClick={() => pausePlottingQueueHandler(params.id.toString())}
-            color="primary"
-            variant="outlined"
-          >
-            PAUSE
-          </Button>
-        );
-      },
-    },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   width: 120,
+    //   renderCell: (params: GridCellParams) => {
+    //     return params.row.status === "failed" ||
+    //       params.row.status === "paused" ? (
+    //       <Button
+    //         onClick={() => restartPlottingQueueHandler(params.id.toString())}
+    //         color="secondary"
+    //         variant="outlined"
+    //       >
+    //         RESTART
+    //       </Button>
+    //     ) : (
+    //       <Button
+    //         onClick={() => pausePlottingQueueHandler(params.id.toString())}
+    //         color="primary"
+    //         variant="outlined"
+    //       >
+    //         PAUSE
+    //       </Button>
+    //     );
+    //   },
+    // },
   ];
 
   const directoriesGridColumns = [
