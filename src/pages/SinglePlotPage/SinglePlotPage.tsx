@@ -23,29 +23,23 @@ const queueColumns = [
     },
   },
   {
-    field: "createDir",
-    headerName: "Create Dir.",
-    width: 150,
+    field: "name",
+    headerName: "Name",
+    width: 230,
   },
   {
-    field: "plotDir",
-    headerName: "Plot Dir.",
-    width: 150,
-  },
-  {
-    field: "poolKey",
-    headerName: "Pool Key",
-    width: 320,
-  },
-  {
-    field: "farmerKey",
-    headerName: "Farmer Key",
-    width: 320,
-  },
-  {
-    field: "plotsAmount",
-    headerName: "Plots Amount",
-    width: 150,
+    field: "locatedDirectoryId",
+    headerName: "Located Directory ID",
+    width: 180,
+    renderCell: (params: GridCellParams) => {
+      return (
+        <Link to={`/plots/${params.id}/`}>
+          {params.value!.toString().slice(0, 6) +
+            "..." +
+            params.value!.toString().slice(-6)}
+        </Link>
+      );
+    },
   },
   {
     field: "created",
@@ -55,6 +49,11 @@ const queueColumns = [
       const value: any = params.value;
       return <>{new Date(value).toLocaleString()}</>;
     },
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 150,
   },
 ];
 

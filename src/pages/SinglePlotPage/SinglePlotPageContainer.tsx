@@ -25,7 +25,6 @@ export const SinglePlotPageContainer: React.FC = () => {
   const getQueuePlotsData = useCallback(async (): Promise<void> => {
     try {
       const data = await PlotsService.getQueuePlotsData(id);
-      console.log(data);
       setPlotsData(data);
     } catch (error) {
       NotificationManager.error(error.message);
