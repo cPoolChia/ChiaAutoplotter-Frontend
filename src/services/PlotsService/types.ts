@@ -34,6 +34,7 @@ export interface QueueType {
 
 export interface PlotType {
   id: UUID;
+  serverId: UUID;
   name: string;
   createdQueueId: UUID;
   locatedDirectoryId: UUID;
