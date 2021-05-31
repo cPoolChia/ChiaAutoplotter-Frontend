@@ -49,6 +49,7 @@ export const ServersPageContainer: React.FC = () => {
         password: fields.password,
         poolKey: fields.poolKey,
         farmerKey: fields.farmerKey,
+        workerPort: Number(fields.workerPort),
       };
       const data: ServerType = await ServerService.addServer({
         ...newFields,
@@ -139,6 +140,11 @@ export const ServersPageContainer: React.FC = () => {
       label: "Farmer Key",
     },
     {
+      name: "workerPort",
+      id: "workerPort",
+      label: "Worker Port",
+    },
+    {
       name: "directory1",
       id: "directory",
       label: "Directory",
@@ -205,6 +211,13 @@ export const ServersPageContainer: React.FC = () => {
       field: "status",
       headerName: "Status",
       width: 130,
+    },
+    {
+      field: "workerPort",
+      headerName: "Worker Port",
+      width: 100,
+      editable: true,
+      type: "number",
     },
     {
       field: "delete",

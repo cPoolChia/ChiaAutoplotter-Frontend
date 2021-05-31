@@ -12,6 +12,7 @@ export interface ServerType {
   farmerKey: string;
   created: Date;
   status: ServerStatusType;
+  workerPort: number;
 }
 
 export interface ServersArrayType {
@@ -26,6 +27,7 @@ export interface ConfigurableServerFieldsType {
   password?: string;
   poolKey?: string;
   farmerKey?: string;
+  workerPort?: number;
 }
 export interface AddServerFieldsType extends ConfigurableServerFieldsType {
   directories?: string[];
