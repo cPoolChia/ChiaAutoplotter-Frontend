@@ -23,8 +23,7 @@ import {
   DirectoryArrayType,
   DirectoryType,
 } from "../../services/DirectoryService/types";
-import { Button, Checkbox, Divider, MenuItem, Select } from "@material-ui/core";
-import DirectoryService from "../../services/DirectoryService";
+import { Button, Checkbox, MenuItem, Select } from "@material-ui/core";
 import {
   formatDiskSize,
   getTakenDiskSizePercentage,
@@ -228,20 +227,6 @@ export const SingleServerPageContainer: React.FC = () => {
       renderCell: (params: GridCellParams) => {
         return (
           <Link to={`/plots/${params.id}/`}>
-            {params.value!.toString().slice(0, 6) +
-              "..." +
-              params.value!.toString().slice(-6)}
-          </Link>
-        );
-      },
-    },
-    {
-      field: "plotTaskId",
-      headerName: "Plot Task ID",
-      width: 180,
-      renderCell: (params: GridCellParams) => {
-        return (
-          <Link to={`/tasks/${params.value}/`}>
             {params.value!.toString().slice(0, 6) +
               "..." +
               params.value!.toString().slice(-6)}

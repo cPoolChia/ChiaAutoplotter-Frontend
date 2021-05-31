@@ -15,7 +15,6 @@ import AutorenewIcon from "@material-ui/icons/Autorenew";
 import TimerIcon from "@material-ui/icons/Timer";
 import FolderIcon from "@material-ui/icons/Folder";
 import SaveIcon from "@material-ui/icons/Save";
-import CheckIcon from "@material-ui/icons/Check";
 
 import { Link } from "react-router-dom";
 import { DirectoryType } from "../services/DirectoryService/types";

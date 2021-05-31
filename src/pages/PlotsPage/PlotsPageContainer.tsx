@@ -52,20 +52,6 @@ export const PlotsPageContainer: React.FC = () => {
       },
     },
     {
-      field: "plotTaskId",
-      headerName: "Plot Task ID",
-      width: 180,
-      renderCell: (params: GridCellParams) => {
-        return (
-          <Link to={`/tasks/${params.value}/`}>
-            {params.value!.toString().slice(0, 6) +
-              "..." +
-              params.value!.toString().slice(-6)}
-          </Link>
-        );
-      },
-    },
-    {
       field: "tempDirName",
       headerName: "Temp Dir.",
       width: 280,

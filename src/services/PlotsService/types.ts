@@ -22,7 +22,6 @@ export interface ConfigurableQueueFieldsType {
 
 export interface QueueType {
   id: UUID;
-  plotTaskId: UUID;
   serverId: UUID;
   tempDirId: UUID;
   finalDirId: UUID;

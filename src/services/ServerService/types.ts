@@ -10,7 +10,6 @@ export interface ServerType {
   password: string;
   poolKey: string;
   farmerKey: string;
-  initTaskId: UUID;
   created: Date;
   status: ServerStatusType;
 }

@@ -23,20 +23,6 @@ const queueColumns = [
     },
   },
   {
-    field: "plotTaskId",
-    headerName: "Plot Task ID",
-    width: 180,
-    renderCell: (params: GridCellParams) => {
-      return (
-        <Link to={`/tasks/${params.id}/`}>
-          {params.value!.toString().slice(0, 6) +
-            "..." +
-            params.value!.toString().slice(-6)}
-        </Link>
-      );
-    },
-  },
-  {
     field: "serverId",
     headerName: "Server ID",
     width: 180,
