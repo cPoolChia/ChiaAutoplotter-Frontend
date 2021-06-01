@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   GridCellParams,
   GridColumns,
@@ -8,7 +8,6 @@ import { NotificationManager } from "react-notifications";
 import ServerService from "../../services/ServerService";
 import {
   ConfigurableServerFieldsType,
-  ServersArrayType,
   ServerType,
 } from "../../services/ServerService/types";
 import { DataGridContainer } from "../../components/EditableDataGrid/DataGridContainer";
@@ -18,19 +17,10 @@ import { Link } from "react-router-dom";
 import { Toolbox } from "../../components/Toolbox";
 import { FieldsType } from "../../components/AddModal/types";
 import { ServersPage } from "./ServersPage";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 export const ServersPageContainer: React.FC = () => {
-  const [servers, setServers] = useState<ServersArrayType>();
-
-  async function getServers(): Promise<void> {
-    try {
-      const data = await ServerService.getAllServers();
-      setServers(data);
-    } catch (error) {
-      console.error(error);
-      NotificationManager.error(error.message);
-    }
-  }
+  const [globalState, setGlobalState] = useGlobalState();
 
   async function addServer(fields: { [key: string]: string }): Promise<void> {
     try {
@@ -55,11 +45,10 @@ export const ServersPageContainer: React.FC = () => {
         ...newFields,
         directories,
       });
-      if (servers) {
-        setServers({ ...servers, items: [...servers.items, data] });
-      } else {
-        setServers({ amount: 1, items: [data] });
-      }
+      setGlobalState({
+        ...globalState,
+        servers: [...globalState.servers, data],
+      });
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -68,11 +57,10 @@ export const ServersPageContainer: React.FC = () => {
   async function deleteServer(id: string): Promise<void> {
     try {
       await ServerService.deleteServer(id);
-      if (servers)
-        setServers({
-          ...servers,
-          items: servers.items.filter((item) => item.id !== id),
-        });
+      setGlobalState({
+        ...globalState,
+        servers: globalState.servers.filter((server) => server.id !== id),
+      });
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -84,15 +72,13 @@ export const ServersPageContainer: React.FC = () => {
   ) {
     try {
       const data = await ServerService.updateServer(id, fields);
-      if (servers) {
-        const idx = servers.items.map((server) => server.id).indexOf(id);
-        const serversItems = [...servers.items];
-        serversItems.splice(idx, 1, data);
-        setServers({
-          ...servers,
-          items: serversItems,
-        });
-      }
+      const idx = globalState.servers.map((server) => server.id).indexOf(id);
+      const servers = [...globalState.servers];
+      servers.splice(idx, 1, data);
+      setGlobalState({
+        ...globalState,
+        servers,
+      });
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -151,10 +137,6 @@ export const ServersPageContainer: React.FC = () => {
       multiple: true,
     },
   ];
-
-  useEffect(() => {
-    getServers();
-  }, []);
 
   const columns: GridColumns = [
     {
@@ -238,13 +220,13 @@ export const ServersPageContainer: React.FC = () => {
     },
   ];
 
-  return servers ? (
+  return (
     <ServersPage
       ServersDataGrid={
         <DataGridContainer
-          rows={servers.items}
+          rows={globalState.servers}
           columns={columns}
-          total={servers.amount}
+          total={globalState.servers.length}
           title="Servers List"
           editHandler={editCellHandler}
           Toolbox={
@@ -257,5 +239,5 @@ export const ServersPageContainer: React.FC = () => {
         />
       }
     />
-  ) : null;
+  );
 };

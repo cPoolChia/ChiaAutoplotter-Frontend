@@ -45,7 +45,7 @@ export const iconMap: { [key: string]: any } = {
   workerPort: <PowerIcon />,
 };
 
-export const dataKeyMap: { [key: string]: any } = {
+export const dataKeyMap: { [key: string]: string } = {
   id: "ID",
   hostname: "Host Name",
   username: "User Name",

@@ -5,6 +5,7 @@ import { LoginForm } from "./LoginForm";
 import { PasswordResetForm } from "./PasswordResetForm";
 import authService from "../../services/AuthService";
 import AuthService from "../../services/AuthService";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 enum FormState {
   Default = "DEFAULT",
@@ -17,6 +18,7 @@ export type FormErrorsType = {
 
 export const LoginFormContainer: React.FC = () => {
   const history = useHistory();
+  const [globalState, setGlobalState] = useGlobalState();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState<FormState>(FormState.Default);
@@ -33,6 +35,10 @@ export const LoginFormContainer: React.FC = () => {
     const { email, password, rememberMe } = e as any;
     try {
       await AuthService.login(email.trim(), password, rememberMe);
+      setGlobalState({
+        ...globalState,
+        isAuthenticated: true,
+      });
       history.push("/servers");
     } catch (error) {
       NotificationManager.error(error.message);

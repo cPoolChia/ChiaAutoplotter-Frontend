@@ -14,6 +14,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import { ReactComponent as CpoolLogo } from "../../assets/images/cpool-2.svg";
 import { useStyles } from "./styles";
 import { NotificationManager } from "react-notifications";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 interface ListItems {
   name: string;
@@ -22,6 +23,7 @@ interface ListItems {
 }
 
 export const Sidebar: React.VFC = () => {
+  const [globalState, setGlobalState] = useGlobalState();
   const [clickedIcon, setClickedIcon] = React.useState<number>(0);
   const classes = useStyles();
   const history = useHistory();
@@ -47,6 +49,10 @@ export const Sidebar: React.VFC = () => {
   const handleLogout = async () => {
     try {
       await authService.logout();
+      setGlobalState({
+        ...globalState,
+        isAuthenticated: false,
+      });
       history.push("/login");
     } catch (error) {
       NotificationManager.error(error.message);

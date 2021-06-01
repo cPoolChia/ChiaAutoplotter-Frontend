@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { config as globalConfig } from "../../config";
-import { DirectoryType } from "../DirectoryService/types";
+import { DirectoryArrayType, DirectoryType } from "../DirectoryService/types";
 import { axiosRequest } from "../../utils/axiosRequest";
 import { requestDecorator } from "../../utils/requestDecorator";
 import { PlotsArrayType, QueuesArrayType } from "../PlotsService/types";
@@ -10,6 +10,15 @@ class ServerService {
 
   constructor(config: typeof globalConfig) {
     this.url = config.serverUrl;
+  }
+
+  @requestDecorator()
+  public async getAllDirectories(): Promise<DirectoryArrayType> {
+    const { data }: AxiosResponse<DirectoryArrayType> = await axiosRequest({
+      url: this.url + "/directory/",
+      headers: { authorization: true },
+    });
+    return data;
   }
 
   @requestDecorator()

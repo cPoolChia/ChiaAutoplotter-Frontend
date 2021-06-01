@@ -8,33 +8,10 @@ import PlotsService from "../../services/PlotsService";
 import { QueuesArrayType } from "../../services/PlotsService/types";
 import { Checkbox } from "@material-ui/core";
 import ServerService from "../../services/ServerService";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 export const PlotsPageContainer: React.FC = () => {
-  const [plots, setPlots] = useState<QueuesArrayType>();
-
-  const getPlotQueues = useCallback(async (): Promise<void> => {
-    try {
-      const plotsData = await PlotsService.getAllPlotsQueue();
-      const newPlotsData: any = Object.assign({}, plotsData);
-      newPlotsData.items.forEach(async (data: any) => {
-        const res = await ServerService.getServerDirectories(data.serverId);
-        data.tempDirName = res.items.find(
-          (dir) => dir.id === data.tempDirId
-        )?.location;
-        data.finalDirName = res.items.find(
-          (dir) => dir.id === data.finalDirId
-        )?.location;
-      });
-      setPlots(newPlotsData);
-    } catch (error) {
-      console.error(error);
-      NotificationManager.error(error.message);
-    }
-  }, []);
-
-  useEffect(() => {
-    getPlotQueues();
-  }, [getPlotQueues]);
+  const [globalState, setGlobalState] = useGlobalState();
 
   const columns = [
     {
@@ -56,7 +33,15 @@ export const PlotsPageContainer: React.FC = () => {
       headerName: "Temp Dir.",
       width: 280,
       renderCell: (params: GridCellParams) => {
-        return <>{params!.value}</>;
+        return (
+          <>
+            {
+              globalState.directories.find(
+                (dir) => dir.id === params.row.tempDirId
+              )?.location
+            }
+          </>
+        );
       },
     },
     {
@@ -64,7 +49,15 @@ export const PlotsPageContainer: React.FC = () => {
       headerName: "Final Dir.",
       width: 280,
       renderCell: (params: GridCellParams) => {
-        return <>{params!.value}</>;
+        return (
+          <>
+            {
+              globalState.directories.find(
+                (dir) => dir.id === params.row.tempDirId
+              )?.location
+            }
+          </>
+        );
       },
     },
     {
@@ -78,10 +71,10 @@ export const PlotsPageContainer: React.FC = () => {
       headerName: "Autoplot",
       width: 100,
       renderCell: (params: GridCellParams) => {
-        const idx: number = plots!.items.findIndex(
+        const idx: number = globalState.plotsQueues.findIndex(
           (queue) => queue.id === params.id
         );
-        const value = plots!.items[idx].autoplot;
+        const value = globalState.plotsQueues[idx].autoplot;
         return <Checkbox disabled checked={value} />;
       },
     },
@@ -119,17 +112,17 @@ export const PlotsPageContainer: React.FC = () => {
     },
   ];
 
-  return plots ? (
+  return (
     <PlotsPage
       PlotsDataGrid={
         <DataGridComponent
           style={{ width: "100%", height: 500 }}
-          rows={plots.items}
+          rows={globalState.plotsQueues}
           columns={columns}
-          total={plots.amount}
+          total={globalState.plotsQueues.length}
           title="Plot Queues List"
         />
       }
     />
-  ) : null;
+  );
 };

@@ -23,7 +23,7 @@ import {
   DirectoryArrayType,
   DirectoryType,
 } from "../../services/DirectoryService/types";
-import { Button, Checkbox, MenuItem, Select } from "@material-ui/core";
+import { Checkbox, MenuItem, Select } from "@material-ui/core";
 import {
   formatDiskSize,
   getTakenDiskSizePercentage,
