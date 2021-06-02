@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+import { GlobalStateType } from "../../common/GlobalState/types";
 import { config as globalConfig } from "../../config";
 import AuthService from "../AuthService";
 
