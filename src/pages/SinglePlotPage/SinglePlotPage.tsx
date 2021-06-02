@@ -6,6 +6,8 @@ import { DataList } from "../../components/DataList";
 import { PlotsArrayType } from "../../services/PlotsService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 import { QueueType } from "../../services/PlotsService/types";
+import { ConsoleComponent } from "../../components/ConsoleComponent";
+import { LogsType } from "../../services/WebsocketService/types";
 
 const queueColumns = [
   {
@@ -60,9 +62,14 @@ const queueColumns = [
 interface Props {
   queueData: QueueType;
   plotsData: PlotsArrayType;
+  log: LogsType | undefined;
 }
 
-export const SinglePlotPage: React.FC<Props> = ({ queueData, plotsData }) => {
+export const SinglePlotPage: React.FC<Props> = ({
+  log,
+  queueData,
+  plotsData,
+}) => {
   return (
     <Container>
       <Breadcrumbs style={{ marginTop: 10, marginBottom: 20 }}>
@@ -83,6 +90,21 @@ export const SinglePlotPage: React.FC<Props> = ({ queueData, plotsData }) => {
           total={plotsData.amount}
         />
       </Paper>
+      {log && (
+        <Paper
+          style={{
+            marginTop: 50,
+            marginBottom: 50,
+            padding: 20,
+            height: 600,
+          }}
+        >
+          <Typography variant="h4" align="center">
+            Console
+          </Typography>
+          <ConsoleComponent log={log} />
+        </Paper>
+      )}
     </Container>
   );
 };

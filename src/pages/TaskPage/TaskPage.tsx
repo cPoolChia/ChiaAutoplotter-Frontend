@@ -1,29 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { NotificationManager } from "react-notifications";
 import { useParams } from "react-router-dom";
 import { ConsoleComponent } from "../../components/ConsoleComponent";
 import WebsocketService from "../../services/WebsocketService";
-
-export type DataSuccessType = {
-  console: Array<{
-    command: string;
-    stdout: string;
-    time: number;
-  }>;
-  info: string;
-};
-
-export type DataErrorType = {
-  error: string;
-  type: string;
-};
-
-export interface LogsType {
-  clock: number;
-  data: null | DataSuccessType | DataErrorType;
-  state: "PENDING" | "UPDATE" | "SUCCESS";
-  timestamp: number;
-  uuid: string;
-}
+import { LogsType } from "../../services/WebsocketService/types";
 
 export const TaskPage: React.FC = () => {
   const [ws, setWs] = useState<WebSocket>();
@@ -31,10 +11,14 @@ export const TaskPage: React.FC = () => {
   const params: any = useParams();
 
   useEffect((): void => {
-    const ws = WebsocketService.websocketFactory(`/tasks/ws/`, {
-      uuid: params.id,
-    });
-    setWs(ws);
+    try {
+      const ws = WebsocketService.websocketFactory(`/tasks/ws/`, {
+        uuid: params.id,
+      });
+      setWs(ws);
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
   }, [params.id]);
 
   useEffect(() => {
