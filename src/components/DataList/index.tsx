@@ -11,10 +11,12 @@ import {
 } from "@material-ui/core";
 import {
   dataKeyMap,
+  getDirectoryLocationById,
   iconMap,
   valueFormatter,
 } from "../../utils/dataListModifier";
 import { useStyles } from "./styles";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 interface Props {
   data: { [key: string]: any };
@@ -23,6 +25,7 @@ interface Props {
 
 export const DataList: React.FC<Props> = ({ data, title }) => {
   const classes = useStyles();
+  const [globalState] = useGlobalState();
 
   return (
     <Grid container spacing={2}>
@@ -41,7 +44,14 @@ export const DataList: React.FC<Props> = ({ data, title }) => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={dataKeyMap[key] || key}
-                      secondary={valueFormatter(key, value)}
+                      secondary={
+                        valueFormatter(key, value) ||
+                        getDirectoryLocationById(
+                          globalState.directories,
+                          value
+                        ) ||
+                        value
+                      }
                     />
                   </ListItem>
                 </Grid>
