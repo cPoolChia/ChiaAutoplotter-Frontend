@@ -45,18 +45,18 @@ export const LoginFormContainer: React.FC = () => {
     }
   };
 
-  // const passwordResetHandler = async (
-  //   e: React.FormEvent<HTMLFormElement>
-  // ): Promise<void> => {
-  //   const { userdata } = e as any;
-  //   try {
-  //     await authService.passwordRecovery(userdata);
-  //     NotificationManager.success("SUCCESS");
-  //   } catch (error) {
-  //     console.error(error);
-  //     NotificationManager.error(error, "ERROR_MSG");
-  //   }
-  // };
+  const passwordResetHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    const { oldPassword, newPassword } = e as any;
+    try {
+      await authService.passwordRecovery(oldPassword, newPassword);
+      NotificationManager.success("Successfully restored!");
+    } catch (error) {
+      console.error(error);
+      NotificationManager.error(error, "ERROR_MSG");
+    }
+  };
 
   const formStateToggler = (e: React.MouseEvent): void => {
     e.preventDefault();
@@ -67,19 +67,17 @@ export const LoginFormContainer: React.FC = () => {
     }
   };
 
-  // return formState === "DEFAULT" ? (
-  return (
+  return formState === "DEFAULT" ? (
     <LoginForm
       loginHandler={loginHandler}
       handleClickShowPassword={handleClickShowPassword}
       showPassword={showPassword}
       formStateToggler={formStateToggler}
     />
+  ) : (
+    <PasswordResetForm
+      formStateToggler={formStateToggler}
+      passwordResetHandler={passwordResetHandler}
+    />
   );
-  // ) : (
-  //   <PasswordResetForm
-  //     formStateToggler={formStateToggler}
-  //     passwordResetHandler={passwordResetHandler}
-  //   />
-  // );
 };

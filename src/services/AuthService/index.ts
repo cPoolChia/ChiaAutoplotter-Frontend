@@ -68,25 +68,20 @@ class AuthService {
     return data.access_token;
   }
 
-  // public async passwordRecovery(input: string): Promise<void | Error> {
-  //   await axiosRequest({
-  //     url: this.url + "/login/password-recovery/" + input,
-  //     method: "POST",
-  //   });
-  // }
-
-  // public async changePasswordFromRecovery(
-  //   token: string,
-  //   newPassword: string
-  // ): Promise<any | Error> {
-  //   const { data } = await axiosRequest({
-  //     url: this.url + "/login/reset-password/",
-  //     method: "POST",
-  //     data: { token, new_password: newPassword },
-  //   });
-
-  //   return data;
-  // }
+  @requestDecorator()
+  public async passwordRecovery(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void | Error> {
+    await axiosRequest({
+      url: this.url + "/user/",
+      method: "PUT",
+      data: {
+        oldPassword,
+        newPassword,
+      },
+    });
+  }
 
   @requestDecorator()
   public async updateJwtToken(): Promise<GetJwtTokenType> {

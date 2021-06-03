@@ -23,6 +23,9 @@ export const useStyles = makeStyles((theme) => ({
   fieldset: {
     border: "none",
   },
+  link: {
+    cursor: "pointer",
+  },
   forgotText: {
     marginLeft: 10,
     marginBottom: 20,

@@ -1,9 +1,18 @@
-import React from "react";
-import { Avatar, Typography, Grid, Button, Link } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  Link,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core";
 import { Form } from "react-final-form";
 import { TextField } from "mui-rff";
-import { LockOutlined } from "@material-ui/icons";
 import { useStyles } from "./styles";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 type Props = {
   passwordResetHandler: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -14,12 +23,23 @@ export const PasswordResetForm: React.VFC<Props> = ({
   passwordResetHandler,
   formStateToggler,
 }) => {
+  const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+
   const classes = useStyles();
+
+  const handleClickShowPassword = (type: string) => {
+    switch (type) {
+      case "oldPassword":
+        setShowOldPassword(!showOldPassword);
+        break;
+      case "newPassword":
+        setShowNewPassword(!showNewPassword);
+    }
+  };
+
   return (
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        <LockOutlined />
-      </Avatar>
+    <Paper className={classes.paper}>
       <Typography component="h1" variant="h5">
         {"Reset password"}
       </Typography>
@@ -35,18 +55,64 @@ export const PasswordResetForm: React.VFC<Props> = ({
                 justify="center"
                 alignItems="stretch"
               >
-                <Typography className={classes.forgotText}>
-                  {"Don't worry, it's ok, we will handle this together."}
-                </Typography>
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
                     variant="outlined"
                     required
-                    id="userdata"
-                    label={"Username / Email"}
-                    name="userdata"
-                    autoComplete="userdata"
+                    name="oldPassword"
+                    label="Old Password"
+                    type={showOldPassword ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() =>
+                              handleClickShowPassword("oldPassword")
+                            }
+                          >
+                            {showOldPassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="oldPassword"
+                    autoComplete="password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    required
+                    name="newPassword"
+                    label="New Password"
+                    type={showNewPassword ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() =>
+                              handleClickShowPassword("newPassword")
+                            }
+                          >
+                            {showNewPassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="newPassword"
+                    autoComplete="password"
                   />
                 </Grid>
               </Grid>
@@ -59,13 +125,17 @@ export const PasswordResetForm: React.VFC<Props> = ({
               >
                 {"Reset password"}
               </Button>
-              <Link variant="body2" onClick={formStateToggler}>
+              <Link
+                className={classes.link}
+                variant="body2"
+                onClick={formStateToggler}
+              >
                 &#8592; {"Back"}
               </Link>
             </fieldset>
           </form>
         )}
       />
-    </div>
+    </Paper>
   );
 };

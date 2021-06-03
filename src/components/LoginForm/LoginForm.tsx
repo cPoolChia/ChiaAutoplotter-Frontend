@@ -11,7 +11,6 @@ import { TextField, Checkboxes } from "mui-rff";
 import { Form } from "react-final-form";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link as RouterLink } from "react-router-dom";
 import { ReactComponent as CpoolLogo } from "../../assets/images/cpool-2.svg";
 import { useStyles } from "./styles";
 
@@ -119,13 +118,17 @@ export const LoginForm: React.VFC<Props> = ({
               >
                 {"Login"}
               </Button>
-              {/* <Grid container>
+              <Grid container>
                 <Grid item>
-                  <Link variant="body2" onClick={formStateToggler}>
-                    {"Forgot password"}
+                  <Link
+                    className={classes.link}
+                    variant="body2"
+                    onClick={formStateToggler}
+                  >
+                    {"Forgot password?"}
                   </Link>
                 </Grid>
-              </Grid> */}
+              </Grid>
             </fieldset>
           </form>
         )}

@@ -18,8 +18,10 @@ import SaveIcon from "@material-ui/icons/Save";
 import PowerIcon from "@material-ui/icons/Power";
 
 import { Link } from "react-router-dom";
-import { DirectoryType } from "../services/DirectoryService/types";
 import { Button } from "@material-ui/core";
+
+import { useGlobalState } from "../common/GlobalState/hooks/useGlobalState";
+import { DirectoryType } from "../services/DirectoryService/types";
 
 export const iconMap: { [key: string]: any } = {
   id: <FingerprintIcon />,
@@ -71,7 +73,10 @@ export const dataKeyMap: { [key: string]: string } = {
   workerPort: "Worker Port",
 };
 
-export function valueFormatter(key: string, value: any): string | JSX.Element {
+export function valueFormatter(
+  key: string,
+  value: any
+): string | false | JSX.Element {
   switch (key) {
     case "created":
       return new Date(value).toLocaleString();
@@ -112,13 +117,18 @@ export function valueFormatter(key: string, value: any): string | JSX.Element {
         </>
       );
     default:
-      return String(value);
+      return false;
   }
 }
 
 export function getDirectoryLocationById(
   directories: DirectoryType[],
   id: string
-) {
-  return directories.find((dir) => dir.id === id)?.location;
+): string | false {
+  const result = directories.find((dir) => dir.id === id)?.location;
+  if (result) {
+    return result;
+  } else {
+    return false;
+  }
 }

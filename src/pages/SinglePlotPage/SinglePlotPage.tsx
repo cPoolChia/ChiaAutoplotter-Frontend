@@ -97,6 +97,7 @@ export const SinglePlotPage: React.FC<Props> = ({
             marginBottom: 50,
             padding: 20,
             height: 600,
+            overflow: "scroll",
           }}
         >
           <Typography variant="h4" align="center">
