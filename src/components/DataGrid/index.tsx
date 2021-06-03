@@ -25,7 +25,14 @@ export const DataGridComponent: React.FC<Props> = ({
       <Typography className={classes.heading} align="center">
         {title}
       </Typography>
-      <DataGrid rows={rows} columns={columns} />
+      <DataGrid
+        pagination
+        pageSize={25}
+        disableColumnMenu
+        rowsPerPageOptions={[25, 50, 100]}
+        rows={rows}
+        columns={columns}
+      />
     </div>
   );
 };
