@@ -22,6 +22,8 @@ export const DataGridComponent: React.FC<Props> = ({
 
   return (
     <DataGrid
+      pagination
+      rowsPerPageOptions={[25, 50, 100]}
       className={classes.root}
       disableColumnMenu={true}
       onEditCellChangeCommitted={editHandler}

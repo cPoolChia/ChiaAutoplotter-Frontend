@@ -27,7 +27,6 @@ export const DataGridComponent: React.FC<Props> = ({
       </Typography>
       <DataGrid
         pagination
-        pageSize={25}
         disableColumnMenu
         rowsPerPageOptions={[25, 50, 100]}
         rows={rows}
