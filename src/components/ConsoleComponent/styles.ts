@@ -11,6 +11,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(1.5),
       marginTop: 20,
     },
+    logger: {
+      lineBreak: "auto",
+    },
     input: {
       color: theme.palette.primary.main,
     },

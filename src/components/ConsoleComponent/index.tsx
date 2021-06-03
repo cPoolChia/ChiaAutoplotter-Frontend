@@ -73,10 +73,12 @@ export const ConsoleComponent: React.FC<Props> = ({ log }) => {
             </div>
           </div>
         ) : (
-          <div>
-            <p>
-              {log.error ? "ERROR: " + log.error : stdoutParser(log.output)}
-            </p>
+          <div className={classes.logger}>
+            {log.error ? (
+              <p>ERROR: {log.error}</p>
+            ) : (
+              stdoutParser(log.output).map((log) => <p>{log}</p>)
+            )}
           </div>
         )}
       </Paper>
