@@ -9,21 +9,35 @@ import { QueuesArrayType } from "../../services/PlotsService/types";
 import { Checkbox } from "@material-ui/core";
 import ServerService from "../../services/ServerService";
 import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
+import { objCompare } from "../../utils/objCompare";
 
 export const PlotsPageContainer: React.FC = () => {
   const [globalState, setGlobalState] = useGlobalState();
 
   const columns = [
     {
+      field: "serverName",
+      headerName: "Server Name",
+      width: 120,
+      renderCell: (params: GridCellParams) => {
+        const plot = globalState.plotsQueues.find(
+          (plot) => plot.id === params.row.id
+        );
+        const serverId = plot?.serverId;
+        const serverName = globalState.servers.find(
+          (server) => server.id === serverId
+        )?.name;
+        return <Link to={`/servers/${serverId}/`}>{serverName}</Link>;
+      },
+    },
+    {
       field: "id",
       headerName: "ID",
-      width: 180,
+      width: 100,
       renderCell: (params: GridCellParams) => {
         return (
           <Link to={`/plots/${params.id}/`}>
-            {params.value!.toString().slice(0, 6) +
-              "..." +
-              params.value!.toString().slice(-6)}
+            {params.value!.toString().slice(0, 6) + "..."}
           </Link>
         );
       },
@@ -68,8 +82,8 @@ export const PlotsPageContainer: React.FC = () => {
     },
     {
       field: "autoplot",
-      headerName: "Autoplot",
-      width: 100,
+      headerName: "Auto",
+      width: 70,
       renderCell: (params: GridCellParams) => {
         const idx: number = globalState.plotsQueues.findIndex(
           (queue) => queue.id === params.id
@@ -86,10 +100,13 @@ export const PlotsPageContainer: React.FC = () => {
     {
       field: "created",
       headerName: "Created",
-      width: 200,
+      width: 110,
+      type: "date",
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
-        return <>{new Date(value).toLocaleString()}</>;
+        const date = new Date(value);
+        const result = date.toLocaleDateString().split("/").reverse().join("-");
+        return <>{result}</>;
       },
     },
     {
@@ -117,7 +134,7 @@ export const PlotsPageContainer: React.FC = () => {
       PlotsDataGrid={
         <DataGridComponent
           style={{ width: "100%", height: 500 }}
-          rows={globalState.plotsQueues}
+          rows={objCompare(globalState.plotsQueues, "serverName")}
           columns={columns}
           total={globalState.plotsQueues.length}
           title="Plot Queues List"

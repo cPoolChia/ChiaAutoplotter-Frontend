@@ -13,20 +13,23 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginBottom: 20,
       padding: 3,
     },
+    list: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    listItem: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
     menuButton: {
       marginRight: 10,
     },
-    drawer: {
-      width: 240,
-      flexShrink: 0,
+    header: {
       whiteSpace: "nowrap",
-    },
-    drawerOpen: {
-      width: 240,
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      width: "100%",
+      display: "flex",
+      justifyContent: "space-evenly",
     },
   })
 );

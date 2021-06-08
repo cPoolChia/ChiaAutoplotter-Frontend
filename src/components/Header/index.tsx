@@ -22,9 +22,8 @@ interface ListItems {
   icon: any;
 }
 
-export const Sidebar: React.VFC = () => {
+export const Header: React.VFC = () => {
   const [globalState, setGlobalState] = useGlobalState();
-  const [clickedIcon, setClickedIcon] = React.useState<number>(0);
   const classes = useStyles();
   const history = useHistory();
 
@@ -42,7 +41,6 @@ export const Sidebar: React.VFC = () => {
   ];
 
   const handleIconClick = (idx: number) => {
-    setClickedIcon(idx);
     history.push(listItems[idx].path);
   };
 
@@ -62,14 +60,14 @@ export const Sidebar: React.VFC = () => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <Drawer variant="permanent" className={classes.drawer}>
+      <header className={classes.header}>
         <div className={classes.logoContainer}>
           <CpoolLogo width={120} />
         </div>
-        <Divider />
-        <List>
+        <List className={classes.list}>
           {listItems.map((item, idx) => (
             <ListItem
+              className={classes.listItem}
               button
               key={item.name}
               onClick={() => {
@@ -77,18 +75,23 @@ export const Sidebar: React.VFC = () => {
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.name} />
+              <ListItemText style={{ flex: "initial" }} primary={item.name} />
             </ListItem>
           ))}
           <Divider />
-          <ListItem onClick={() => handleLogout()} button key={"Logout"}>
+          <ListItem
+            className={classes.listItem}
+            onClick={() => handleLogout()}
+            button
+            key={"Logout"}
+          >
             <ListItemIcon>
               <ExitToAppIcon style={{ color: "#36AD58" }} />
             </ListItemIcon>
-            <ListItemText primary={"Logout"} />
+            <ListItemText style={{ flex: "initial" }} primary={"Logout"} />
           </ListItem>
         </List>
-      </Drawer>
+      </header>
     </div>
   );
 };

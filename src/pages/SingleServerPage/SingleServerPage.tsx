@@ -7,14 +7,17 @@ import { PlotsArrayType } from "../../services/PlotsService/types";
 import { ServerType } from "../../services/ServerService/types";
 import { DataGridComponent } from "../../components/DataGrid";
 import { useStyles } from "./styles";
-import { DirectoryArrayType } from "../../services/DirectoryService/types";
+import {
+  DirectoryArrayType,
+  DirectoryType,
+} from "../../services/DirectoryService/types";
 
 interface Props {
   QueuesDataGrid: React.ReactChild;
   DirectoriesDataGrid: React.ReactChild;
   locatedPlots: PlotsArrayType;
   serverData: ServerType;
-  directories: DirectoryArrayType;
+  directories: DirectoryType[];
 }
 
 export const SingleServerPage: React.FC<Props> = ({
@@ -41,22 +44,20 @@ export const SingleServerPage: React.FC<Props> = ({
       width: 250,
       renderCell: (params: GridCellParams) => {
         return (
-          <>
-            {
-              directories!.items.find((dir) => dir.id === params.value)
-                ?.location
-            }
-          </>
+          <>{directories!.find((dir) => dir.id === params.value)?.location}</>
         );
       },
     },
     {
       field: "created",
       headerName: "Created",
-      width: 200,
+      width: 110,
+      type: "date",
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
-        return <>{new Date(value).toLocaleString()}</>;
+        const date = new Date(value);
+        const result = date.toLocaleDateString().split("/").reverse().join("-");
+        return <>{result}</>;
       },
     },
     {

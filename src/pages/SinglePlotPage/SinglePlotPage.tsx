@@ -46,10 +46,13 @@ const queueColumns = [
   {
     field: "created",
     headerName: "Created",
-    width: 200,
+    width: 110,
+    type: "date",
     renderCell: (params: GridCellParams) => {
       const value: any = params.value;
-      return <>{new Date(value).toLocaleString()}</>;
+      const date = new Date(value);
+      const result = date.toLocaleDateString().split("/").reverse().join("-");
+      return <>{result}</>;
     },
   },
   {
