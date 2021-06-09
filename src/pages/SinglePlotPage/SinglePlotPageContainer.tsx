@@ -8,12 +8,14 @@ import { PlotsArrayType } from "../../services/PlotsService/types";
 import PlotsService from "../../services/PlotsService";
 import WebsocketService from "../../services/WebsocketService";
 import { LogsType } from "../../services/WebsocketService/types";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 export const SinglePlotPageContainer: React.FC = () => {
   const [ws, setWs] = useState<WebSocket>();
   const [log, setLog] = useState<LogsType>();
   const [queueData, setQueueData] = useState<QueueType>();
   const [plotsData, setPlotsData] = useState<PlotsArrayType>();
+  const [globalState, setGlobalState] = useGlobalState();
 
   const { id }: any = useParams();
 
@@ -64,12 +66,31 @@ export const SinglePlotPageContainer: React.FC = () => {
     [getQueueData, getQueuePlotsData]
   );
 
+  const onModalSubmit = async (fields: any) => {
+    try {
+      const result = await PlotsService.updatePlotQueue(id, fields);
+      setQueueData(result);
+      setGlobalState({
+        ...globalState,
+        plotsQueues: [...globalState.plotsQueues, result],
+      });
+    } catch (error) {
+      NotificationManager.error(error.message);
+    }
+  };
+
   useEffect(() => {
     initialRequests();
     connectToWs();
   }, [initialRequests, connectToWs]);
 
   return queueData && plotsData ? (
-    <SinglePlotPage log={log} queueData={queueData} plotsData={plotsData} />
+    <SinglePlotPage
+      setQueueData={setQueueData}
+      onModalSubmit={onModalSubmit}
+      log={log}
+      queueData={queueData}
+      plotsData={plotsData}
+    />
   ) : null;
 };

@@ -59,7 +59,7 @@ export const Router: React.FC = () => {
                 <PlotsPage />
               </DefaultLayout>
             </Route>
-            <Route exact path="/">
+            <Route path="/">
               <Redirect to="/servers" />
             </Route>
           </>

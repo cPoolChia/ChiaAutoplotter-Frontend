@@ -1,5 +1,11 @@
-import React from "react";
-import { Breadcrumbs, Container, Paper, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  Breadcrumbs,
+  Button,
+  Container,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { GridCellParams } from "@material-ui/data-grid";
 import { Link } from "react-router-dom";
 import { DataList } from "../../components/DataList";
@@ -11,23 +17,35 @@ import {
   DirectoryArrayType,
   DirectoryType,
 } from "../../services/DirectoryService/types";
+import { EditDataModal } from "../../components/EditDataModal";
+import { ServerService } from "../../services";
+import { NotificationManager } from "react-notifications";
+import { GlobalStateType } from "../../common/GlobalState/types";
 
 interface Props {
   QueuesDataGrid: React.ReactChild;
   DirectoriesDataGrid: React.ReactChild;
   locatedPlots: PlotsArrayType;
-  serverData: ServerType;
+  globalState: GlobalStateType;
+  setGlobalState: React.Dispatch<React.SetStateAction<GlobalStateType>>;
+  id: any;
   directories: DirectoryType[];
 }
 
 export const SingleServerPage: React.FC<Props> = ({
   QueuesDataGrid,
   DirectoriesDataGrid,
-  serverData,
+  globalState,
+  setGlobalState,
   locatedPlots,
   directories,
+  id,
 }) => {
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const [thisServer, setThisServer] = useState(
+    globalState.servers.find((server) => server.id === id)
+  );
 
   const plotsColumns = [
     {
@@ -67,15 +85,73 @@ export const SingleServerPage: React.FC<Props> = ({
     },
   ];
 
-  return (
+  const fields = [
+    {
+      id: "name",
+      label: "Name",
+      name: "name",
+    },
+    {
+      id: "hostname",
+      label: "IP",
+      name: "hostname",
+    },
+    {
+      id: "username",
+      label: "Username",
+      name: "username",
+    },
+    {
+      id: "password",
+      label: "Password",
+      name: "password",
+    },
+    {
+      id: "poolKey",
+      label: "Pool Key",
+      name: "poolKey",
+    },
+    {
+      id: "farmerKey",
+      label: "Farmer Key",
+      name: "farmerKey",
+    },
+  ];
+
+  const onModalSubmit = async (fields: any) => {
+    try {
+      const result = await ServerService.updateServer(id, fields);
+      setThisServer(result);
+      setGlobalState({
+        ...globalState,
+        servers: [...globalState.servers, result],
+      });
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+      NotificationManager.error(error.message);
+    }
+  };
+
+  return thisServer ? (
     <Container>
       <Breadcrumbs className={classes.breadcrumbs}>
         <Link className={classes.breadcrumbsLink} to="/servers">
           Servers
         </Link>
-        <Typography>{serverData.id}</Typography>
+        <Typography>{thisServer.id}</Typography>
       </Breadcrumbs>
-      <DataList title="Server Data" data={serverData} />
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+        Edit Data
+      </Button>
+      <EditDataModal
+        submitHandler={onModalSubmit}
+        open={open}
+        title="Edit Server Data"
+        setOpen={setOpen}
+        fields={fields}
+      />
+      <DataList title="Server Data" data={thisServer} />
       <Paper className={classes.paper}>
         <DataGridComponent
           title="Plots"
@@ -88,5 +164,5 @@ export const SingleServerPage: React.FC<Props> = ({
       {QueuesDataGrid}
       {DirectoriesDataGrid}
     </Container>
-  );
+  ) : null;
 };

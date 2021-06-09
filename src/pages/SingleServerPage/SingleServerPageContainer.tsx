@@ -35,7 +35,6 @@ export const SingleServerPageContainer: React.FC = () => {
   const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
   const [globalState, setGlobalState] = useGlobalState();
 
-  const serverData = globalState.servers.find((s) => s.id === id);
   const queues = globalState.plotsQueues.filter((q) => q.serverId === id);
   const directories = globalState.directories.filter((d) => d.serverId === id);
 
@@ -464,10 +463,12 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
-  return serverData && queues && directories && locatedPlots !== undefined ? (
+  return queues && directories && locatedPlots ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
-      serverData={serverData}
+      globalState={globalState}
+      setGlobalState={setGlobalState}
+      id={id}
       directories={directories}
       QueuesDataGrid={
         <DataGridContainer
