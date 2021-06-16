@@ -90,31 +90,37 @@ export const SingleServerPage: React.FC<Props> = ({
       id: "name",
       label: "Name",
       name: "name",
+      defaultValue: thisServer!.name,
     },
     {
       id: "hostname",
       label: "IP",
       name: "hostname",
+      defaultValue: thisServer!.hostname,
     },
     {
       id: "username",
       label: "Username",
       name: "username",
+      defaultValue: thisServer!.username,
     },
     {
       id: "password",
       label: "Password",
       name: "password",
+      defaultValue: thisServer!.password,
     },
     {
       id: "poolKey",
       label: "Pool Key",
       name: "poolKey",
+      defaultValue: thisServer!.poolKey,
     },
     {
       id: "farmerKey",
       label: "Farmer Key",
       name: "farmerKey",
+      defaultValue: thisServer!.farmerKey,
     },
   ];
 
@@ -124,7 +130,7 @@ export const SingleServerPage: React.FC<Props> = ({
       setThisServer(result);
       setGlobalState({
         ...globalState,
-        servers: [...globalState.servers, result],
+        servers: [...globalState.servers, result], //TODO: rewrite this part
       });
       setOpen(false);
     } catch (error) {

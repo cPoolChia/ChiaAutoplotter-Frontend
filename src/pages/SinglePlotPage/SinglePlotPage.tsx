@@ -15,8 +15,6 @@ import { QueueType } from "../../services/PlotsService/types";
 import { ConsoleComponent } from "../../components/ConsoleComponent";
 import { LogsType } from "../../services/WebsocketService/types";
 import { EditDataModal } from "../../components/EditDataModal";
-import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
-import { PlotsService } from "../../services";
 
 const queueColumns = [
   {
@@ -98,16 +96,19 @@ export const SinglePlotPage: React.FC<Props> = ({
       id: "plotsAmount",
       name: "plotsAmount",
       label: "Plots Amount",
+      defaultValue: queueData.plotsAmount,
     },
     {
       id: "tempDirId",
       name: "tempDirId",
       label: "Temp. Dir",
+      defaultValue: queueData.tempDirId,
     },
     {
       id: "finalDirId",
       name: "finalDirId",
       label: "Final Dir",
+      defaultValue: queueData.finalDirId,
     },
   ];
 

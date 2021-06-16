@@ -15,7 +15,7 @@ interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   submitHandler: (fields: any) => Promise<void>;
-  fields: { [key: string]: string }[];
+  fields: { [key: string]: any }[];
 }
 
 export const EditDataModal: React.FC<Props> = ({
@@ -54,6 +54,7 @@ export const EditDataModal: React.FC<Props> = ({
                       id={field.id}
                       label={field.label}
                       name={field.name}
+                      value={field.defaultValue}
                       autoComplete={field.autoComplete}
                     />
                   </Grid>
