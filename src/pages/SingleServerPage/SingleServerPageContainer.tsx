@@ -28,46 +28,20 @@ import {
   formatDiskSize,
   getTakenDiskSizePercentage,
 } from "../../utils/diskSizeFormatter";
+import { useGlobalState } from "../../common/GlobalState/hooks/useGlobalState";
 
 export const SingleServerPageContainer: React.FC = () => {
-  const [serverData, setServerData] = useState<ServerType>();
-  const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
-  const [queues, setQueues] = useState<QueuesArrayType>();
-  const [directories, setDirectories] = useState<DirectoryArrayType>();
-
   const { id }: any = useParams();
+  const [locatedPlots, setLocatedPlots] = useState<PlotsArrayType>();
+  const [globalState, setGlobalState] = useGlobalState();
 
-  const getServerData = useCallback(async (): Promise<void> => {
-    try {
-      const data = await ServerService.getServer(id);
-      setServerData(data);
-    } catch (error) {
-      NotificationManager.error(error.message);
-    }
-  }, [id]);
+  const queues = globalState.plotsQueues.filter((q) => q.serverId === id);
+  const directories = globalState.directories.filter((d) => d.serverId === id);
 
   const getLocatedPlots = useCallback(async (): Promise<void> => {
     try {
       const data = await ServerService.getLocatedPlots(id);
       setLocatedPlots(data);
-    } catch (error) {
-      NotificationManager.error(error.message);
-    }
-  }, [id]);
-
-  const getQueueData = useCallback(async (): Promise<void> => {
-    try {
-      const data = await ServerService.getQueues(id);
-      setQueues(data);
-    } catch (error) {
-      NotificationManager.error(error.message);
-    }
-  }, [id]);
-
-  const getServerDirectories = useCallback(async (): Promise<void> => {
-    try {
-      const data = await ServerService.getServerDirectories(id);
-      setDirectories(data);
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -79,9 +53,16 @@ export const SingleServerPageContainer: React.FC = () => {
     try {
       const data: QueueType = await PlotsService.addPlotQueue(id, fields);
       if (queues) {
-        setQueues({ ...queues, items: [...queues.items, data] });
+        // setGlobalState({ ...queues, items: [...queues.items, data] });
+        setGlobalState({
+          ...globalState,
+          plotsQueues: [...globalState.plotsQueues, data],
+        });
       } else {
-        setQueues({ amount: 1, items: [data] });
+        setGlobalState({
+          ...globalState,
+          plotsQueues: [data],
+        });
       }
     } catch (error) {
       NotificationManager.error(error.message);
@@ -95,9 +76,12 @@ export const SingleServerPageContainer: React.FC = () => {
         fields.location
       );
       if (directories) {
-        setDirectories({ ...directories, items: [...directories.items, data] });
+        setGlobalState({
+          ...globalState,
+          directories: [...globalState.directories, data],
+        });
       } else {
-        setDirectories({ amount: 1, items: [data] });
+        setGlobalState({ ...globalState, directories: [data] });
       }
     } catch (error) {
       NotificationManager.error(error.message);
@@ -111,12 +95,12 @@ export const SingleServerPageContainer: React.FC = () => {
     try {
       const data = await PlotsService.updatePlotQueue(id, fields);
       if (queues) {
-        const idx = queues.items.map((queue) => queue.id).indexOf(id);
-        const queueItems = [...queues.items];
+        const idx = queues.map((queue) => queue.id).indexOf(id);
+        const queueItems = [...queues];
         queueItems.splice(idx, 1, data);
-        setQueues({
-          ...queues,
-          items: queueItems,
+        setGlobalState({
+          ...globalState,
+          plotsQueues: queueItems,
         });
       }
     } catch (error) {
@@ -150,8 +134,8 @@ export const SingleServerPageContainer: React.FC = () => {
 
   const restartPlottingQueueHandler = async (id: string) => {
     try {
-      await PlotsService.restartPlotQueue(id);
-      await getQueueData();
+      const result = await PlotsService.restartPlotQueue(id);
+      await updatePlotQueue(id, result);
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -159,8 +143,8 @@ export const SingleServerPageContainer: React.FC = () => {
 
   const pausePlottingQueueHandler = async (id: string) => {
     try {
-      await PlotsService.pausePlotQueue(id);
-      await getQueueData();
+      const result = await PlotsService.pausePlotQueue(id);
+      await updatePlotQueue(id, result);
     } catch (error) {
       NotificationManager.error(error.message);
     }
@@ -172,7 +156,7 @@ export const SingleServerPageContainer: React.FC = () => {
       id: "tempDirId",
       label: "Temporary Dir. Id",
       type: "autocomplete",
-      data: directories?.items.map((directory) => {
+      data: directories?.map((directory) => {
         return {
           label: directory.location,
           value: directory.id,
@@ -184,7 +168,7 @@ export const SingleServerPageContainer: React.FC = () => {
       id: "finalDirId",
       label: "Final Dir. Id",
       type: "autocomplete",
-      data: directories?.items.map((directory) => {
+      data: directories?.map((directory) => {
         return {
           label: directory.location,
           value: directory.id,
@@ -207,14 +191,8 @@ export const SingleServerPageContainer: React.FC = () => {
   ];
 
   const initialRequests = useCallback(
-    () =>
-      Promise.all([
-        getServerData(),
-        getLocatedPlots(),
-        getQueueData(),
-        getServerDirectories(),
-      ]),
-    [getServerData, getLocatedPlots, getQueueData, getServerDirectories]
+    async () => await getLocatedPlots(),
+    [getLocatedPlots]
   );
 
   useEffect(() => {
@@ -225,13 +203,23 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 180,
+      width: 85,
       renderCell: (params: GridCellParams) => {
         return (
           <Link to={`/plots/${params.id}/`}>
-            {params.value!.toString().slice(0, 6) +
-              "..." +
-              params.value!.toString().slice(-6)}
+            {params.value!.toString().slice(0, 6) + "..."}
+          </Link>
+        );
+      },
+    },
+    {
+      field: "serverName",
+      headerName: "Server Name",
+      width: 120,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <Link to={`/servers/${id}/`}>
+            {globalState.servers.find((server) => server.id === id)?.name}
           </Link>
         );
       },
@@ -244,9 +232,7 @@ export const SingleServerPageContainer: React.FC = () => {
         return (
           <Select
             style={{ width: "100%", height: "100%" }}
-            value={
-              directories!.items.find((dir) => dir.id === params.value)?.id
-            }
+            value={directories!.find((dir) => dir.id === params.value)?.id}
             onChange={(
               event: React.ChangeEvent<{ name?: string; value: unknown }>
             ) =>
@@ -257,7 +243,7 @@ export const SingleServerPageContainer: React.FC = () => {
               )
             }
           >
-            {directories!.items.map((dir) => (
+            {directories!.map((dir) => (
               <MenuItem key={dir.id} value={dir.id}>
                 {dir.location}
               </MenuItem>
@@ -274,9 +260,7 @@ export const SingleServerPageContainer: React.FC = () => {
         return (
           <Select
             style={{ width: "100%", height: "100%" }}
-            value={
-              directories!.items.find((dir) => dir.id === params.value)?.id
-            }
+            value={directories!.find((dir) => dir.id === params.value)?.id}
             onChange={(
               event: React.ChangeEvent<{ name?: string; value: unknown }>
             ) =>
@@ -287,7 +271,7 @@ export const SingleServerPageContainer: React.FC = () => {
               )
             }
           >
-            {directories!.items.map((dir) => (
+            {directories!.map((dir) => (
               <MenuItem key={dir.id} value={dir.id}>
                 {dir.location}
               </MenuItem>
@@ -299,18 +283,18 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "plotsAmount",
       headerName: "Plots Amount",
-      width: 130,
+      width: 123,
       editable: true,
     },
     {
       field: "autoplot",
-      headerName: "Autoplot",
-      width: 100,
+      headerName: "Auto",
+      width: 70,
       renderCell: (params: GridCellParams) => {
-        const idx: number = queues!.items.findIndex(
+        const idx: number = queues!.findIndex(
           (queue) => queue.id === params.id
         );
-        const value = queues!.items[idx].autoplot;
+        const value = queues[idx].autoplot;
         return (
           <Checkbox
             onChange={() =>
@@ -333,10 +317,12 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "created",
       headerName: "Created",
-      width: 200,
+      width: 110,
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
-        return <>{new Date(value).toLocaleString()}</>;
+        const date = new Date(value);
+        const result = date.toLocaleDateString().split("/").reverse().join("-");
+        return <>{result}</>;
       },
     },
     {
@@ -345,7 +331,9 @@ export const SingleServerPageContainer: React.FC = () => {
       width: 200,
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
-        return <>{value ? new Date(value).toLocaleString() : ""}</>;
+        return (
+          <>{value ? new Date(value).toLocaleString().slice(0, -3) : ""}</>
+        );
       },
     },
     {
@@ -354,7 +342,9 @@ export const SingleServerPageContainer: React.FC = () => {
       width: 200,
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
-        return <>{value ? new Date(value).toLocaleTimeString() : ""}</>;
+        return (
+          <>{value ? new Date(value).toLocaleTimeString().slice(0, -3) : ""}</>
+        );
       },
     },
     {
@@ -388,13 +378,11 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 180,
+      width: 100,
       renderCell: (params: GridCellParams) => {
         return (
           <Link to={`/directories/${params.id}/`}>
-            {params.value!.toString().slice(0, 6) +
-              "..." +
-              params.value!.toString().slice(-6)}
+            {params.value!.toString().slice(0, 6) + "..."}
           </Link>
         );
       },
@@ -402,12 +390,12 @@ export const SingleServerPageContainer: React.FC = () => {
     {
       field: "location",
       headerName: "Location / Path",
-      width: 300,
+      width: 220,
     },
     {
       field: "status",
       headerName: "status",
-      width: 200,
+      width: 160,
     },
     {
       field: "diskSize",
@@ -417,6 +405,23 @@ export const SingleServerPageContainer: React.FC = () => {
         return (
           <>
             {params.value ? formatDiskSize(Number(params.value), "GB") : null}
+          </>
+        );
+      },
+    },
+    {
+      field: "diskSizeLeft",
+      headerName: "Free Disk Size",
+      width: 200,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <>
+            {params.value
+              ? formatDiskSize(
+                  Number(params.row.diskSize - params.row.diskTaken),
+                  "GB"
+                )
+              : null}
           </>
         );
       },
@@ -458,16 +463,18 @@ export const SingleServerPageContainer: React.FC = () => {
     },
   ];
 
-  return serverData && queues && directories && locatedPlots !== undefined ? (
+  return queues && directories && locatedPlots ? (
     <SingleServerPage
       locatedPlots={locatedPlots}
-      serverData={serverData}
+      globalState={globalState}
+      setGlobalState={setGlobalState}
+      id={id}
       directories={directories}
       QueuesDataGrid={
         <DataGridContainer
-          rows={queues.items}
+          rows={queues}
           columns={plotsGridColumns}
-          total={queues.amount}
+          total={queues.length}
           title="Plot Queues List"
           editHandler={editPlotCellHandler}
           Toolbox={
@@ -481,9 +488,9 @@ export const SingleServerPageContainer: React.FC = () => {
       }
       DirectoriesDataGrid={
         <DataGridContainer
-          rows={directories.items}
+          rows={directories}
           columns={directoriesGridColumns}
-          total={directories.amount}
+          total={directories.length}
           title="Directories List"
           Toolbox={
             <Toolbox

@@ -161,45 +161,45 @@ export const ServersPageContainer: React.FC = () => {
       editable: true,
     },
     {
-      field: "password",
-      headerName: "Password",
-      width: 200,
-      editable: true,
-    },
-    {
       field: "poolKey",
       headerName: "Pool Key",
-      width: 320,
+      width: 120,
       editable: true,
+      renderCell: (params: GridCellParams) => {
+        return <>{params.value}</>;
+      },
     },
     {
       field: "farmerKey",
       headerName: "Farmer Key",
-      width: 320,
+      width: 120,
       editable: true,
+      renderCell: (params: GridCellParams) => {
+        return <>{params.value}</>;
+      },
     },
     {
       field: "created",
       headerName: "Created",
-      width: 200,
+      width: 110,
       type: "date",
       renderCell: (params: GridCellParams) => {
         const value: any = params.value;
         const date = new Date(value);
-        return <>{date.toLocaleString()}</>;
+        const result = date.toLocaleDateString().split("/").reverse().join("-");
+        return <>{result}</>;
       },
     },
     {
       field: "status",
       headerName: "Status",
-      width: 130,
+      width: 90,
     },
     {
       field: "workerPort",
-      headerName: "Worker Port",
-      width: 100,
+      headerName: "Port",
+      width: 80,
       editable: true,
-      type: "number",
     },
     {
       field: "delete",

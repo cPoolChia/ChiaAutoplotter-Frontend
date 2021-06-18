@@ -135,19 +135,19 @@ export const AddModal: React.FC<Props> = ({
               </Grid>
               <DialogActions>
                 <Button
-                  onClick={handleClose}
-                  variant="outlined"
-                  color="secondary"
-                >
-                  Cancel
-                </Button>
-                <Button
                   ref={btnRef}
                   onClick={handleSubmit}
                   variant="outlined"
                   color="primary"
                 >
                   Add
+                </Button>
+                <Button
+                  onClick={handleClose}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  Cancel
                 </Button>
               </DialogActions>
             </form>

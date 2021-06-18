@@ -22,9 +22,9 @@ axiosInstance.interceptors.response.use(
             },
           });
         } catch (error) {
-          throw new Error(
-            error.response.data.detail || error.response.data.message
-          );
+          // throw new Error(
+          //   error.response.data.detail || error.response.data.message
+          // );
         }
       }
     } else if (

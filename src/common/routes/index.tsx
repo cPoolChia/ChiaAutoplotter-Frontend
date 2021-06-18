@@ -26,7 +26,16 @@ export const Router: React.FC = () => {
         {!globalState.isAuthenticated ? (
           <Redirect to="/login" />
         ) : globalState.isAuthenticated && !globalState.hasLoaded ? (
-          <CircularProgress />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </div>
         ) : (
           <>
             <Route exact path="/servers/:id">
@@ -59,7 +68,7 @@ export const Router: React.FC = () => {
                 <PlotsPage />
               </DefaultLayout>
             </Route>
-            <Route exact path="/">
+            <Route path="/">
               <Redirect to="/servers" />
             </Route>
           </>
